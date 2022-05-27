@@ -1,9 +1,10 @@
 import React from 'react';
+import DatabaseView from './DatabaseView';
 
 const Routes = () => {
   return (
     <div className="Routes">
-      <h1>Routes!~</h1>
+      <DatabaseView />
     </div>
   );
 };
