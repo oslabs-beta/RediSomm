@@ -1,8 +1,8 @@
 {
-  "name": "my-new-app",
-  "productName": "my-new-app",
-  "version": "1.0.0",
-  "description": "My Electron application description",
+  "name": "redisomm",
+  "productName": "RediSomm",
+  "version": "0.1.0",
+  "description": "TTL tracker and monitoring tool for Redis",
   "main": ".webpack/main",
   "scripts": {
     "start": "electron-forge start",
@@ -12,10 +12,24 @@
     "lint": "eslint --ext .ts,.tsx ."
   },
   "keywords": [],
-  "author": {
-    "name": "Youngs-kim",
-    "email": "doppio0518@gmail.com"
-  },
+  "contributors": [
+    {
+      "name": "Young Suk Kim",
+      "url": "http://github.com/youngs-kim"
+    },
+    {
+      "name": "Sam Carter",
+      "url": "http://github.com/cartersamj"
+    },
+    {
+      "name": "Andrew C Park",
+      "url": "https://github.com/andrewcpark"
+    },
+    {
+      "name": "Andrea Bennett",
+      "url": "http://github.com/AndreaBennett42"
+    }
+  ],
   "license": "MIT",
   "config": {
     "forge": {
@@ -24,7 +38,7 @@
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "name": "my_new_app"
+            "name": "RediSomm"
           }
         },
         {
