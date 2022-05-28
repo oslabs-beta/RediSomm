@@ -4,9 +4,9 @@ import DataRow from './DataRow';
 const Table = () => {
   return (
     <div className="table main-table">
-      <DataRow data="1" />
-      <DataRow data="2" />
-      <DataRow data="3" />
+      <DataRow dataKey="Key1" dataValue="value1" dataTTL={5} />
+      <DataRow dataKey="Key2" dataValue="value2" dataTTL={6} />
+      <DataRow dataKey="Key3" dataValue="value3" />
     </div>
   );
 };

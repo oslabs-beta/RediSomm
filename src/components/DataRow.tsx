@@ -1,9 +1,15 @@
 import React from 'react';
 
-const DataRow = ({ data }: { data: string }) => {
+export type DataRow = {
+  dataKey: string;
+  dataValue: string;
+  dataTTL?: number | typeof Infinity;
+};
+
+const DataRow = ({ dataKey, dataValue, dataTTL = Infinity }: DataRow) => {
   return (
     <div className="data-row">
-      <h3>{data}</h3>
+      <h3>{dataKey + ':' + dataValue + ':' + dataTTL}</h3>
     </div>
   );
 };

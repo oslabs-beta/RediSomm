@@ -4,7 +4,7 @@ module.exports = [
     // We're specifying native_modules in the test because the asset relocator loader generates a
     // "fake" .node file which is really a cjs file.
     test: /native_modules\/.+\.node$/,
-    use: 'node-loader',
+    use: 'node-loader'
   },
   {
     test: /\.(m?js|node)$/,
@@ -12,9 +12,9 @@ module.exports = [
     use: {
       loader: '@vercel/webpack-asset-relocator-loader',
       options: {
-        outputAssetBase: 'native_modules',
-      },
-    },
+        outputAssetBase: 'native_modules'
+      }
+    }
   },
   {
     test: /\.tsx?$/,
@@ -22,8 +22,19 @@ module.exports = [
     use: {
       loader: 'ts-loader',
       options: {
-        transpileOnly: true,
-      },
-    },
+        transpileOnly: true
+      }
+    }
   },
+  {
+    test: /\.s[ac]ss$/i,
+    use: ['style-loader', 'css-loader', 'sass-loader']
+  },
+  {
+    test: /\.(png|jp(e*)g|svg|gif)$/,
+    loader: 'file-loader',
+    options: {
+      name: '[path]/hello.[ext]'
+    }
+  }
 ];
