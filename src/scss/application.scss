@@ -9,11 +9,6 @@ body {
   background: darken($primary-dark, 5);
 }
 
-.logo-img {
-  background: $primary-light;
-  max-width: 20vw;
-}
-
 #root {
   margin: 0;
 }
@@ -27,20 +22,93 @@ body {
   display: block;
   content: '';
   height: 100vw;
-  min-width: 25vw;
+  min-width: 15vw;
   background-color: $primary;
+
+  .logo-image {
+    background: $primary-light;
+    width: 100%;
+    height: auto;
+  }
+
+  // 日本語
+  #exit-text {
+    color: $primary-light;
+  }
 }
 
-.main-table {
-  padding: 2em;
-  width: 60vw;
-  height: 100vw;
-  border: 3px solid red;
-}
+.database-view {
+  display: flex;
 
-.data-row {
-  display: block;
-  width: 100%;
-  background-color: lightgray;
-  border: 1px solid black;
+  .middle-tables {
+    .add-new-row {
+      padding-left: 1em;
+      display: flex;
+      content: '';
+      background-color: $primary-dark;
+      width: $middle-table-width;
+      height: 10vw;
+      flex-direction: row;
+      align-items: center;
+
+      .entry {
+        height: 1em;
+        width: 25%;
+        margin: 0.3em;
+      }
+    }
+
+    .main-table {
+      padding: 0.5em;
+      width: $middle-table-width;
+      height: 80vw;
+      border: 3px solid red;
+
+      .data-row {
+        padding: 0;
+        display: block;
+        width: 100%;
+        line-height: 0.9em;
+        background-color: $primary-dark;
+        border: 1px solid black;
+        // font
+        color: $primary-light;
+        font-size: 0.75em;
+      }
+    }
+  }
+  .ticker-container {
+    display: flex;
+    flex-direction: column;
+    width: 25vw;
+
+    .ticker-table {
+      display: block;
+      padding: 0.5em;
+
+      height: 100vh;
+      border: 3px solid green;
+      background-color: $primary-dark;
+
+      .data-row {
+        padding: 0;
+        display: block;
+        width: 100%;
+        line-height: 0.9em;
+        background-color: $primary-dark;
+        border: 1px solid black;
+        // font
+        color: $primary-light;
+        font-size: 0.75em;
+      }
+    }
+    .ticker-name {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      content: '';
+      height: 10vh;
+      background-color: $primary;
+    }
+  }
 }
