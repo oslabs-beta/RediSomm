@@ -116,7 +116,7 @@ body {
           padding: 0;
           display: block;
           width: 100%;
-          line-height: 0.9em;
+          line-height: 1.25em;
           background-color: $primary-dark;
           border: 1px solid black;
           // font
@@ -148,9 +148,10 @@ body {
 
         .data-row {
           padding: 0;
-          display: block;
+          display: flex;
+          flex-direction: row;
           width: 100%;
-          line-height: 0.9em;
+          line-height: 1.25em;
           background-color: $primary-dark;
           border: 1px solid black;
           // font
