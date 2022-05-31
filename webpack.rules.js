@@ -33,8 +33,9 @@ module.exports = [
   {
     test: /\.(png|jp(e*)g|svg|gif)$/,
     loader: 'file-loader',
+    include: /assets/,
     options: {
-      name: '[path]/hello.[ext]'
+      name: '[path]/[name].[ext]'
     }
   }
 ];

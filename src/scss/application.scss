@@ -7,6 +7,7 @@ body {
   max-width: 38rem;
   padding: 0;
   background: darken($primary-dark, 5);
+  color: $primary-light;
 }
 
 #root {
@@ -16,99 +17,142 @@ body {
 .window-display {
   display: flex;
   flex-direction: row;
-}
-
-.nav {
-  display: block;
-  content: '';
-  height: 100vw;
-  min-width: 15vw;
-  background-color: $primary;
-
-  .logo-image {
-    background: $primary-light;
-    width: 100%;
-    height: auto;
-  }
-
-  // 日本語
-  #exit-text {
-    color: $primary-light;
-  }
-}
-
-.database-view {
-  display: flex;
-
-  .middle-tables {
-    .add-new-row {
-      padding-left: 1em;
-      display: flex;
-      content: '';
-      background-color: $primary-dark;
-      width: $middle-table-width;
-      height: 10vw;
-      flex-direction: row;
-      align-items: center;
-
-      .entry {
-        height: 1em;
-        width: 25%;
-        margin: 0.3em;
-      }
-    }
-
-    .main-table {
-      padding: 0.5em;
-      width: $middle-table-width;
-      height: 80vw;
-      border: 3px solid red;
-
-      .data-row {
-        padding: 0;
-        display: block;
-        width: 100%;
-        line-height: 0.9em;
-        background-color: $primary-dark;
-        border: 1px solid black;
-        // font
-        color: $primary-light;
-        font-size: 0.75em;
-      }
-    }
-  }
-  .ticker-container {
+  justify-content: space-between;
+  .nav {
     display: flex;
     flex-direction: column;
-    width: 25vw;
+    justify-content: space-between;
+    height: 100vh;
+    min-width: 20vw;
+    background-color: $primary;
 
-    .ticker-table {
-      display: block;
-      padding: 0.5em;
+    .logo-image {
+      padding: 0px;
+      background: $primary-light;
+      width: 100%;
+      height: auto;
+    }
 
+    .nav-text {
+      .nav-menu {
+        padding: .5em;
+        list-style: none;
+  
+        .nav-menu-item {
+          display: flex;
+          flex-direction:column;
+          padding: 1em;
+          margin-left: -.5em;
+          align-items: flex-start;
+          justify-content: center;
+  
+          &:hover {
+            color: $primary-dark;
+            background: $primary-light;
+        }
+  
+          &:active {
+            color: $primary;
+            background: darken($primary-light, 10)
+          }
+      }
+    } 
+  }
+  #exit-text {
+    padding: .5em;
+    display: flex;
+        flex-direction:column;
+        padding: 1em;
+        margin-left: -.5em;
+        align-items: flex-start;
+        justify-content: center;
+        
+        &:hover {
+
+      color: $primary-dark;
+      background: $primary-light;
+  }
+
+    &:active {
+      color: $primary;
+      background: darken($primary-light, 10)
+    }
+  }
+  }
+  .database-view {
+    display: flex;
+    justify-content: space-between;
+    
+    .middle-tables {
+      display: flex;
+      flex-direction: column;
       height: 100vh;
-      border: 3px solid green;
-      background-color: $primary-dark;
 
-      .data-row {
-        padding: 0;
-        display: block;
-        width: 100%;
-        line-height: 0.9em;
+      .add-new-row {
+        padding-left: 1em;
+        display: flex;
         background-color: $primary-dark;
-        border: 1px solid black;
-        // font
-        color: $primary-light;
-        font-size: 0.75em;
+        width: $middle-table-width;
+        flex-direction: row;
+        align-items: center;
+        .entry {
+          width: 25%;
+          margin: 0.3em;
+        }
+      }
+
+      .main-table {
+        padding: 0.5em;
+        width: $middle-table-width;
+        border: 3px solid red;
+        height: 100%;
+
+        .data-row {
+          padding: 0;
+          display: block;
+          width: 100%;
+          line-height: 0.9em;
+          background-color: $primary-dark;
+          border: 1px solid black;
+          // font
+          color: $primary-light;
+          font-size: 0.75em;
+        }
       }
     }
-    .ticker-name {
+    .ticker-container {
       display: flex;
-      align-items: center;
-      justify-content: center;
-      content: '';
-      height: 10vh;
-      background-color: $primary;
+      flex-direction: column;
+      width: 25vw;
+      height: 100vh;
+
+      .ticker-name {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        content: '';
+        height: 5vh;
+        background-color: $primary;
+      }
+      .ticker-table {
+        display: block;
+        padding: 0.5em;
+        height: 100%;
+        border: 3px solid green;
+        background-color: $primary-dark;
+
+        .data-row {
+          padding: 0;
+          display: block;
+          width: 100%;
+          line-height: 0.9em;
+          background-color: $primary-dark;
+          border: 1px solid black;
+          // font
+          color: $primary-light;
+          font-size: 0.75em;
+        }
+      }
     }
   }
 }
