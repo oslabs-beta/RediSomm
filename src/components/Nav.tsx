@@ -13,6 +13,7 @@ const Nav = () => {
             <li className="nav-menu-item" id="top-nav-item"><span className="list-text">View Databases</span></li>
             <li className="nav-menu-item"><span className="list-text">TTL Tracker</span></li>
             <li className="nav-menu-item"><span className="list-text">Metrics</span></li>
+            <li className="nav-menu-item"><span className="list-text">설정</span></li>
           </ul>
         </div>
       </div>
