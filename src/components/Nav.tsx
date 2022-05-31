@@ -1,10 +1,12 @@
 import React from 'react';
 import '../../assets/logo-large.png'
 
+
 const Nav = () => {
   return (
     <div className="nav">
       <div className="logo-space">
+        <img style={{display: 'none'}}className="logo-image" src={require('../../.webpack/renderer/assets/logo-large.png')}></img>
         <img className="logo-image" src='../../.webpack/renderer/assets/logo-large.png'></img>
         <div className="nav-text">
           <ul className="nav-menu">
