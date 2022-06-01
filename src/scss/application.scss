@@ -22,10 +22,12 @@ body {
   width: $middle-table-width;
 }
 
-.window-display {
+// .window-display {
+//   display: flex;
+//   flex-direction: row;
+//   justify-content: stretch;
+.container {
   display: flex;
-  flex-direction: row;
-  justify-content: stretch;
 
   .nav {
     display: flex;

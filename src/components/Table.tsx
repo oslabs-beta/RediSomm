@@ -1,10 +1,14 @@
-import React, {useEffect, useState, useMemo} from 'react';
+import React, {useEffect, useState, useMemo, useRef} from 'react';
 // import DataRow from './DataRow';
 import {AgGridReact} from 'ag-grid-react';
 
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine-dark.css'
+import { GridApi } from 'ag-grid-community';
+import { application } from 'express';
+import { GridBodyScrollFeature } from 'ag-grid-community/dist/lib/gridBodyComp/gridBodyScrollFeature';
 const Table = () => {
+  const gridRef = useRef();
 
   const [rowData, setRowData] = useState([
     {dataKey: 'data1', dataValue: 'value1', TTL: null, status: 'Not Expired', dataType: 'string', size: 8},
@@ -24,6 +28,14 @@ const Table = () => {
     // {field: 'del'},
   ])
 
+  const onGridReady = () => {
+    const {api, columnApi} = gridRef.current;
+
+    if {api === null || columnApi === null} {return;}
+
+    GridBodyScrollFeature.api.sizeColumnsToFit
+  }
+
   const defaultColDef = useMemo(():Object=>{
     return ({
     sortable : true,
@@ -33,13 +45,17 @@ const Table = () => {
     resizable: true
   })}, [])
 
+  gridApi.sizeColumnsToWidth()
+
   return (
     <div className="table main-table ag-theme-alpine-dark">
       <div className="ag-grid-main">     
       <AgGridReact 
+      ref={gridRef}
       rowData={rowData}
       columnDefs={columnDefs}
       defaultColDef={defaultColDef}
+      onGridReady={onGridReady}
      />
      </div>
 
