@@ -17,6 +17,11 @@ body {
   width: 100%;
 }
 
+.ag-grid-main {
+  height: 100%;
+  width: $middle-table-width;
+}
+
 .window-display {
   display: flex;
   flex-direction: row;
