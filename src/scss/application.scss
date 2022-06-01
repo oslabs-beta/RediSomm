@@ -4,7 +4,6 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
     Arial, sans-serif;
   margin: 0;
-  max-width: 38rem;
   padding: 0;
   background: darken($primary-dark, 5);
   color: $primary-light;
@@ -12,20 +11,32 @@ body {
 
 #root {
   margin: 0;
-}
-
-.window-display {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: stretch;
+  width: 100%;
+}
+
+.ag-grid-main {
+  height: 100%;
+  width: $middle-table-width;
+}
+
+// .window-display {
+//   display: flex;
+//   flex-direction: row;
+//   justify-content: stretch;
+.container {
+  display: flex;
+
   .nav {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     height: 100vh;
-    min-width: 20vw;
+    max-width: 200px;
     background-color: $primary;
-
+   
     .logo-image {
       padding: 0px;
       background: $primary-light;
@@ -37,12 +48,17 @@ body {
       .nav-menu {
         padding: .5em;
         list-style: none;
-  
+        //.nav-menu-item
         .nav-menu-item {
+          list-style: none;
+          
+          .list-text {
+          text-decoration: none ;
+          color: $primary-light;
           display: flex;
           flex-direction:column;
           padding: 1em;
-          margin-left: -.5em;
+          margin: 0 -.5em;
           align-items: flex-start;
           justify-content: center;
   
@@ -55,6 +71,7 @@ body {
             color: $primary;
             background: darken($primary-light, 10)
           }
+        }
       }
     } 
   }
@@ -81,7 +98,8 @@ body {
   }
   .database-view {
     display: flex;
-    justify-content: space-between;
+    flex-direction: row;
+    justify-content: stretch;
     
     .middle-tables {
       display: flex;
@@ -92,7 +110,7 @@ body {
         padding-left: 1em;
         display: flex;
         background-color: $primary-dark;
-        width: $middle-table-width;
+        width: 60vw;
         flex-direction: row;
         align-items: center;
         .entry {
@@ -103,7 +121,7 @@ body {
 
       .main-table {
         padding: 0.5em;
-        width: $middle-table-width;
+        width: 100%;
         border: 3px solid red;
         height: 100%;
 
@@ -111,7 +129,7 @@ body {
           padding: 0;
           display: block;
           width: 100%;
-          line-height: 0.9em;
+          line-height: 1.25em;
           background-color: $primary-dark;
           border: 1px solid black;
           // font
@@ -123,14 +141,14 @@ body {
     .ticker-container {
       display: flex;
       flex-direction: column;
-      width: 25vw;
       height: 100vh;
-
+      min-width: 25vw;
+      padding-left: 2em;;
       .ticker-name {
         display: flex;
         align-items: center;
         justify-content: center;
-        content: '';
+
         height: 5vh;
         background-color: $primary;
       }
@@ -143,9 +161,10 @@ body {
 
         .data-row {
           padding: 0;
-          display: block;
+          display: flex;
+          flex-direction: row;
           width: 100%;
-          line-height: 0.9em;
+          line-height: 1.25em;
           background-color: $primary-dark;
           border: 1px solid black;
           // font
