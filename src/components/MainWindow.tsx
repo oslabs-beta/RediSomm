@@ -7,7 +7,7 @@ import TTLpage from './pages/TTLpage';
 import Settings from './pages/Settings';
 import Metrics from './pages/Metrics';
 
-const RoutesTest = () => {
+const MainWindow = () => {
   return (
     <Routes>
       <Route path="/" element={<DatabaseView />} />
@@ -18,7 +18,7 @@ const RoutesTest = () => {
   );
 };
 
-export default RoutesTest;
+export default MainWindow;
 
 
 // const Routes = () => {

@@ -36,7 +36,7 @@ body {
     height: 100vh;
     max-width: 200px;
     background-color: $primary;
-
+   
     .logo-image {
       padding: 0px;
       background: $primary-light;
@@ -48,8 +48,13 @@ body {
       .nav-menu {
         padding: .5em;
         list-style: none;
-  
+        //.nav-menu-item
         .nav-menu-item {
+          list-style: none;
+          
+          .list-text {
+          text-decoration: none ;
+          color: $primary-light;
           display: flex;
           flex-direction:column;
           padding: 1em;
@@ -66,6 +71,7 @@ body {
             color: $primary;
             background: darken($primary-light, 10)
           }
+        }
       }
     } 
   }
@@ -104,7 +110,7 @@ body {
         padding-left: 1em;
         display: flex;
         background-color: $primary-dark;
-        width: $middle-table-width;
+        width: 60vw;
         flex-direction: row;
         align-items: center;
         .entry {
@@ -136,7 +142,7 @@ body {
       display: flex;
       flex-direction: column;
       height: 100vh;
-      min-width: 33vw;
+      min-width: 25vw;
       padding-left: 2em;;
       .ticker-name {
         display: flex;

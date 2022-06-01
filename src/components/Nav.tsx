@@ -7,26 +7,36 @@ const Nav = () => {
   return (
     <div className="nav">
       <div className="logo-space">
-      <img style={{display: 'none'}}className="logo-image" src={require('../../.webpack/renderer/assets/logo-large.png')}></img>
-      <img className="logo-image" src='../../.webpack/renderer/assets/logo-large.png'></img>
+        <img style={{display: 'none'}}className="logo-image" src={require('../../.webpack/renderer/assets/logo-large.png')}></img>
+        <img className="logo-image" src='../../.webpack/renderer/assets/logo-large.png'></img>
+        <div className="nav-text">
+          <ul className="nav-menu">
+            <li className="nav-menu-item" id="top-nav-item">
+              <Link className="list-text" to="/">
+                View Databases
+              </Link>
+            </li>
+            <li className="nav-menu-item">
+              <Link className="list-text" to="/ttl">
+                TTL TRACKER
+              </Link>
+            </li>
+            <li className="nav-menu-item">
+              <Link className="list-text" to="/metrics">
+                Metrics
+              </Link>
+            </li>
+            <li className="nav-menu-item">
+              <Link className="list-text" to="/settings">
+                설정
+              </Link>
+            </li>
+          </ul>
+        </div>
       </div>
-      <div className="nav-menu">
-        <Link className="nav-menu-item" to="/">
-          View Databases
-        </Link>
-
-        <Link className="nav-menu-item" to="/ttl">
-          TTL TRACKER
-        </Link>
-        <Link className="nav-menu-item" to="/metrics">
-        Metrics
-        </Link>
-
-        <Link className="nav-menu-item" to="/settings">
-          설정
-        </Link>
+      <div className="nav-menu-item" id="exit-text">
+        出口
       </div>
-      <div className="nav-menu-item" id="exit-text">出口</div>
     </div>
   );
 };
