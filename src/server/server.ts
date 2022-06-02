@@ -26,11 +26,13 @@ app.use(express.urlencoded());
 //         res.status(200).json(data.rows)
 //       })
 //   })
+
+app.use('/api', apiRouter);
+
 //READ 1 
 app.get('/', mongoController.getAllRecords, ({req, res} : {req: any, res: any}) => {
     res.status(200).send(res.locals.allRecords);
 }); 
-app.use('/api', apiRouter);
 
 
 // GLOBAL ERROR HANDLER

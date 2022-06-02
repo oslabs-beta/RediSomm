@@ -6,6 +6,7 @@ import { KeyData } from '../models/mongoModels';
 type mongoController = {
     getAllRecords: RequestHandler, 
     getValueRecords: RequestHandler,
+    getLiveAndExpiredKeyRecord: RequestHandler,
 }
 
 export const mongoController: mongoController = {
@@ -25,13 +26,13 @@ getAllRecords: (req: Request, res: Response, next: NextFunction): void => {
       });
     },
 
-//READ 5
+//READ 5 - Get all expired records of an inputted Key
 getValueRecords: (req: Request, res: Response, next: NextFunction): void => {
-    const { key } = req.params;
-    KeyData.find({ key: key, expired: true }, function (err: NodeJS.ErrnoException, result: Buffer){
+  const receivedKey = req.params.key;
+    KeyData.find({ 'key': receivedKey, 'expired': true }, function (err: NodeJS.ErrnoException, result: Buffer){
     if (err) {
         const defaultErr = {
-            log: 'ERROR found in mongoController.getLiveValue',
+            log: 'ERROR found in mongoController.getValueRecords',
             message: { err: `There was an error ${err}` },
           };
           return next(defaultErr);
@@ -39,15 +40,25 @@ getValueRecords: (req: Request, res: Response, next: NextFunction): void => {
     res.locals.valueRecords = result;
     return next();
   });
-}
+},
 
-//READ 3
-  
-//READ 4
 
-//READ 5
 
-//READ 6
+//READ 6 - Get all live and expired records of an inputted Key
+getLiveAndExpiredKeyRecord: (req: Request, res: Response, next: NextFunction): void => {
+  const receivedKey = req.params.key;
+    KeyData.find({ 'key': receivedKey }, function (err: NodeJS.ErrnoException, result: Buffer){
+    if (err) {
+        const defaultErr = {
+            log: 'ERROR found in mongoController.getLiveAndExpiredKeyRecord',
+            message: { err: `There was an error ${err}` },
+          };
+          return next(defaultErr);
+    }
+    res.locals.keyRecord = result;
+    return next();
+  });
+},
 
 //READ 7
 
