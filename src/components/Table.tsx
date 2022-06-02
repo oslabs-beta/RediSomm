@@ -2,6 +2,8 @@ import React, {useEffect, useState, useMemo, useRef} from 'react';
 // import DataRow from './DataRow';
 import {AgGridReact} from 'ag-grid-react';
 import {AgGridReact as AgGridReactType} from 'ag-grid-react/lib/agGridReact'
+import axios from 'axios';
+
 
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine-dark.css'
@@ -57,16 +59,17 @@ const Table = () => {
 
   useEffect(() =>  {
     // typescript does not support useEffect returning Promises
-    const scopedUseEffect = async () => { 
+
       console.log('in use effect')
-      const response = await fetch('/getAll', {headers: {'Content-Type':'application/json'}});
-      const initData = await response.json()
-      console.log(initData)
-      setRowData((prevState : RowDataType[]) : RowDataType[] =>{
-        return [...prevState, ...initData]
-      })
-    } 
-    scopedUseEffect();
+      axios('/api/getAll', {headers: {'Content-Type':'application/json'}})
+      .then(response => console.log(response))
+      .then(initData => initData)
+      .catch(err => console.log(err))
+
+      // console.log(initData)
+      // setRowData((prevState : RowDataType[]) : RowDataType[] =>{
+      //   return [...prevState, ...initData]
+      // })
   }, [])
 
   return (
