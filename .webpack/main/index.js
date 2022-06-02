@@ -1017,8 +1017,8 @@ if (__webpack_require__(/*! electron-squirrel-startup */ "./node_modules/electro
 var createWindow = function () {
     // Create the browser window.
     var mainWindow = new electron_1.BrowserWindow({
-        height: 600,
-        width: 800
+        height: 720,
+        width: 1280
     });
     // and load the index.html of the app.
     mainWindow.loadURL('http://localhost:3000/main_window');

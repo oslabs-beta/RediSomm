@@ -1,17 +1,16 @@
-import React from 'react';
+// import React from 'react';
+// import { DataRowType } from './Table';
 
-export type DataRow = {
-  dataKey: string;
-  dataValue: string;
-  dataTTL?: number | typeof Infinity;
-};
+// const DataRow = ({ dataKey, dataValue, dataExpirationTime, dataType, dataIsExpired}: DataRowType) => {
+//   return (
+//     <div className="data-row">
+//       <span className="data-row-key">{dataKey}</span>
+//       <span className="data-row-value">{dataValue}</span>
+//       <span className="data-row-expire-time">{dataExpirationTime}</span>
+//       <span className="data-row-type">{dataType}</span>
+//       <span className="data-row-is-expired">{dataIsExpired}</span>
+//     </div>
+//   );
+// };
 
-const DataRow = ({ dataKey, dataValue, dataTTL = Infinity }: DataRow) => {
-  return (
-    <div className="data-row">
-      <h3>{dataKey + ':' + dataValue + ':' + dataTTL}</h3>
-    </div>
-  );
-};
-
-export default DataRow;
+// export default DataRow;
