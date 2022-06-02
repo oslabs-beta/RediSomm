@@ -1,6 +1,6 @@
 import express from 'express';
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 const path = require('path');
 import { apiRouter } from './routes/api';
 import { mongoController } from './controller/mongoController';
@@ -29,11 +29,17 @@ app.use(express.urlencoded());
 
 app.use('/api', apiRouter);
 
-//READ 1 
-app.get('/', mongoController.getAllRecords, ({req, res} : {req: any, res: any}) => {
+//READ 1
+app.get(
+  '/getAll',
+  () => {
+    console.log('hi');
+  },
+  mongoController.getAllRecords,
+  ({ req, res }: { req: any; res: any }) => {
     res.status(200).send(res.locals.allRecords);
-}); 
-
+  }
+);
 
 // GLOBAL ERROR HANDLER
 //   app.use((err, req, res, next) => {
@@ -46,18 +52,9 @@ app.get('/', mongoController.getAllRecords, ({req, res} : {req: any, res: any}) 
 //     console.log(errorObj.log);
 //     return res.status(errorObj.status).json(errorObj.message);
 //   });
-  
 
-
-
-
-
-
-
-
-
-app.listen(PORT, ()=> {
-    console.log(`listening on port ${PORT}`)
+app.listen(PORT, () => {
+  console.log(`listening on port ${PORT}`);
 });
 
 module.exports = app;

@@ -8,22 +8,33 @@ import 'ag-grid-community/dist/styles/ag-theme-alpine-dark.css'
 import { GridApi } from 'ag-grid-community';
 import { application } from 'express';
 import { GridBodyScrollFeature } from 'ag-grid-community/dist/lib/gridBodyComp/gridBodyScrollFeature';
+
+export type RowDataType = {
+  key: string,
+  value: string,
+  expirationTime: string,
+  dataType: string,
+  expired: boolean,
+  keyspaceMiss: number,
+  keyspaceHit: number,
+  timeAdded: Date,
+  oldKeyNames: string[],
+  oldValues: string[],
+  manualDelete: boolean
+}
+
 const Table = () => {
   const gridRef = useRef<AgGridReactType>(null);
 
-  const [rowData, setRowData] = useState<Object[]>([
-    {dataKey: 'data1', dataValue: 'value1', TTL: null, status: 'Not Expired', dataType: 'string', size: 8},
-    {dataKey: 'data2', dataValue: 'value2', TTL: 1003, status: 'Not Expired', dataType: 'string', size: 32},
-    {dataKey: 'data3', dataValue: 'value3', TTL: null, status: 'Expired', dataType: 'string', size: 16}
-  ])
+  const [rowData, setRowData] = useState<Object[]>([])
   const [columnDefs, setColumnDefs] = useState<Object[]>([
-    {field: 'dataKey'},
-    {field: 'dataValue'},
+    {field: 'Key'},
+    {field: 'Value'},
     {field: 'TTL'},
     //just testing;
-    {field:'status'},
-    {field: 'dataType'},
-    {field: 'size'},
+    {field:'Status'},
+    {field: 'Type'},
+    {field: 'Size'},
     // {field: 'keyspace misses'},
     // {field: 'Added'},
     // {field: 'del'},
@@ -44,6 +55,19 @@ const Table = () => {
     resizable: true
   }
 
+  useEffect(() =>  {
+    // typescript does not support useEffect returning Promises
+    const scopedUseEffect = async () => { 
+      console.log('in use effect')
+      const response = await fetch('/getAll', {headers: {'Content-Type':'application/json'}});
+      const initData = await response.json()
+      console.log(initData)
+      setRowData((prevState : RowDataType[]) : RowDataType[] =>{
+        return [...prevState, ...initData]
+      })
+    } 
+    scopedUseEffect();
+  }, [])
 
   return (
     <div className="table main-table ag-theme-alpine-dark">

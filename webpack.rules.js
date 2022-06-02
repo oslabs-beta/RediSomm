@@ -35,7 +35,7 @@ module.exports = [
     loader: 'file-loader',
     include: /assets/,
     options: {
-      name: '[path]/[name].[ext]'
+      name: '[path][name].[ext]'
     }
   }
 ];
