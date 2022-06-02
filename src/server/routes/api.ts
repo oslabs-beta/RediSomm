@@ -6,33 +6,33 @@ const router = express.Router();
 import { Request, Response, Router, NextFunction } from 'express';
 
 
+
 //READ 2 - get live value for a live key
-router.get('/api/getLiveValue/:key', redisController.getLiveValue, (req: Request, res: Response) => {
+router.get('/getLiveValue/:key', redisController.getLiveValue, (req: Request, res: Response) => {
     res.status(200).send(res.locals.liveValue);
 }); 
 
 //READ 3 - get live values for given keys
-router.get('/api/getLiveValues/:keys', redisController.getLiveValues, (req: Request, res: Response) => {
+router.get('/getLiveValues/:keys', redisController.getLiveValues, (req: Request, res: Response) => {
     res.status(200).send(res.locals.liveValues);
 }); 
 
 //READ 4 -  get all live keys for given keys
-router.get('/api/getAllLiveKeys/:keys', redisController.getAllLiveKeys, (req: Request, res: Response) => {
+router.get('/getAllLiveKeys/:keys', redisController.getAllLiveKeys, (req: Request, res: Response) => {
     res.status(200).send(res.locals.allLiveKeys);
 }); 
 
 
 //READ 5
-router.get('/api/getValueRecords/:key', mongoController.getValueRecords, (req: Request, res: Response) => {
+router.get('/getValueRecords/:key', mongoController.getValueRecords, (req: Request, res: Response) => {
     res.status(200).send(res.locals.valueRecords);
 }); 
 
 
-// //READ 6
-// router.get('/api.getLiveAndExpiredKeyRecord/:key', mongoController.getLiveAndExpiredKeyRecord, (req: Request, res: Response) => {
-//     res.status(200);
-//     res.send(res.locals.LiveAndExpiredKeyRecord);
-// }); 
+//READ 6
+router.get('/getLiveAndExpiredKeyRecord/:key', mongoController.getLiveAndExpiredKeyRecord, (req: Request, res: Response) => {
+    res.status(200).send(res.locals.keyRecord);
+}); 
 
 
 // //READ 7
