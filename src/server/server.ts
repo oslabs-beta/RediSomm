@@ -30,16 +30,9 @@ app.use(express.urlencoded());
 app.get('/', mongoController.getAllRecords, ({req, res} : {req: any, res: any}) => {
     res.status(200).send(res.locals.allRecords);
 }); 
+app.use('/api', apiRouter);
 
-//   app.use('/api/user', userApiRouter);
-//   app.use('/api/review', reviewApiRouter);
-  
-  
-//   app.use("*", (req, res) => {
-//     console.log('react will handle it')
-//     res.sendFile(path.join(__dirname, '../public/build/index.html'));
-//   });
-  
+
 // GLOBAL ERROR HANDLER
 //   app.use((err, req, res, next) => {
 //     const defaultErr = {
@@ -54,7 +47,6 @@ app.get('/', mongoController.getAllRecords, ({req, res} : {req: any, res: any}) 
   
 
 
-app.use('/api', apiRouter);
 
 
 

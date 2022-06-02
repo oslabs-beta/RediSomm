@@ -56,7 +56,38 @@ interface Key {
 }
 
 export const redisController = {
-    //READ 2
+    //CREATE 1 - create key value pair
+    createKVP: (req: Request , res: Response, next: NextFunction): void => {
+        const { key, value }   = req.body;
+        client.set(key, function (err: NodeJS.ErrnoException, reply: Buffer) {
+            res.locals.kvPair = reply;
+            return next();
+        })
+        .catch((err: NodeJS.ErrnoException) => {
+            const defaultErr = {
+                log: 'ERROR found in mongoController.getAllRecords',
+                message: { err: `There was an error ${err}` },
+            };
+            return next(defaultErr);
+        })
+    },
+    //CREATE 2 - create key value pair and TTL 
+   createKVPTTL: (req: Request , res: Response, next: NextFunction): void => {
+        const { key, value, ttl }   = req.body;
+        client.setex(key, function (err: NodeJS.ErrnoException, reply: Buffer) {
+            res.locals.createKVPTTL = reply;
+            return next();
+        })
+        .catch((err: NodeJS.ErrnoException) => {
+            const defaultErr = {
+                log: 'ERROR found in mongoController.getAllRecords',
+                message: { err: `There was an error ${err}` },
+            };
+            return next(defaultErr);
+        })
+    },
+   //READ 1 IS IN API.TS
+    //READ 2 - read live value from live key
     getLiveValue: (req: Request , res: Response, next: NextFunction): void => {
         const { key }   = req.params;
         client.get(key, function (err: NodeJS.ErrnoException, reply: Buffer) {
@@ -71,7 +102,7 @@ export const redisController = {
             return next(defaultErr);
         })
     },
-    //READ 3
+    //READ 3 - read live values for given keys
     getLiveValues: (req: Request, res: Response, next: NextFunction): void => {
         const { keys } = req.params;
         client.get(keys, function (err: NodeJS.ErrnoException, reply: Buffer) {
@@ -80,13 +111,13 @@ export const redisController = {
         })
             .catch((err: NodeJS.ErrnoException) => {
                 const defaultErr = {
-                    log: 'ERROR found in mongoController.getAllRecords',
+                    log: 'ERROR found in mongoController.getLiveValues',
                     message: { err: `There was an error ${err}` },
                 };
                 return next(defaultErr);
             })
     },
-    //READ 4 - get all live keys ????? CHECK THIS
+    //READ 4 - get all live keys
     getAllLiveKeys: (req: Request, res: Response, next: NextFunction): void => {
         client.keys('*', function (err: NodeJS.ErrnoException, reply: Buffer) {
             res.locals.liveValue = reply;
@@ -94,12 +125,113 @@ export const redisController = {
         })
             .catch((err: NodeJS.ErrnoException) => {
                 const defaultErr = {
-                    log: 'ERROR found in mongoController.getAllRecords',
+                    log: 'ERROR found in mongoController.getAllLiveKeys',
+                    message: { err: `There was an error ${err}` },
+                };
+                return next(defaultErr);
+            })
+    },
+
+    //UPDATE 1 - update key name
+    updateKeyName: (req: Request, res: Response, next: NextFunction): void => {
+        client.rename('req.body.oldKeyName', 'req.body.newKeyName', function (err: NodeJS.ErrnoException, reply: Buffer) {
+            const { oldKeyName, newKeyName } = req.body;
+            res.locals.newKeyName = reply;
+            return next();
+        })
+            .catch((err: NodeJS.ErrnoException) => {
+                const defaultErr = {
+                    log: 'ERROR found in mongoController.updateKeyName',
+                    message: { err: `There was an error ${err}` },
+                };
+                return next(defaultErr);
+            })
+    },
+    //UPDATE 2 - update value to given key
+    updateValue: (req: Request, res: Response, next: NextFunction): void => {
+        client.set('req.body.keyName', 'req.body.newValue', function (err: NodeJS.ErrnoException, reply: Buffer) {
+            const { keyName, newValue } = req.body;
+            res.locals.newValue = reply;            return next();
+        })
+            .catch((err: NodeJS.ErrnoException) => {
+                const defaultErr = {
+                    log: 'ERROR found in mongoController.updateValue',
+                    message: { err: `There was an error ${err}` },
+                };
+                return next(defaultErr);
+            })
+    },
+ //UPDATE 3 - append value to given key
+    appendValue: (req: Request, res: Response, next: NextFunction): void => {
+        client.append('req.body.keyName', 'req.body.appendValue', function (err: NodeJS.ErrnoException, reply: Buffer) {
+            const { keyName, appendValue } = req.body;
+            res.locals.appendValue = reply;
+            return next();
+        })
+            .catch((err: NodeJS.ErrnoException) => {
+                const defaultErr = {
+                    log: 'ERROR found in mongoController.appendValue',
+                    message: { err: `There was an error ${err}` },
+                };
+                return next(defaultErr);
+            })
+    },
+ //UPDATE 4 - add expiration time
+    addExpireTime: (req: Request, res: Response, next: NextFunction): void => {
+        client.expire('req.body.keyName', 'req.body.expireTime', function (err: NodeJS.ErrnoException, reply: Buffer) {
+            const { keyName, expireTime } = req.body;
+            res.locals.expireTime = reply;
+            return next();
+        })
+            .catch((err: NodeJS.ErrnoException) => {
+                const defaultErr = {
+                    log: 'ERROR found in mongoController.addExpireTime',
+                    message: { err: `There was an error ${err}` },
+                };
+                return next(defaultErr);
+            })
+    },
+//UPDATE 4 - remove expiration time
+    removeExpireTime: (req: Request, res: Response, next: NextFunction): void => {
+        client.persist('req.body.keyName', 'req.body.expireTime', function (err: NodeJS.ErrnoException, reply: Buffer) {
+            const { keyName, expireTime } = req.body;
+            res.locals.expireTime = reply;
+            return next();
+        })
+            .catch((err: NodeJS.ErrnoException) => {
+                const defaultErr = {
+                    log: 'ERROR found in mongoController.removeExpireTime',
+                    message: { err: `There was an error ${err}` },
+                };
+                return next(defaultErr);
+            })
+    },
+//DELETE 1 - delete key
+    deleteKey: (req: Request, res: Response, next: NextFunction): void => {
+        client.del('req.body.keyName',  function (err: NodeJS.ErrnoException, reply: Buffer) {
+            const { keyName } = req.body;
+            res.locals.keyName = reply;
+            return next();
+        })
+            .catch((err: NodeJS.ErrnoException) => {
+                const defaultErr = {
+                    log: 'ERROR found in mongoController.deleteKey',
                     message: { err: `There was an error ${err}` },
                 };
                 return next(defaultErr);
             })
     }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
