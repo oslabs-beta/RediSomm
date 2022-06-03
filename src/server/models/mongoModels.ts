@@ -35,7 +35,8 @@ const redisMetricSchema = new Schema ({
     hitRate: Number, 
     hitMissesPerSec: Number,
     keyspaceMiss: Number,
-    keyspaceHit: Number
+    keyspaceHit: Number,
+    metricsDate: Date
 });
 
 const KeyData = mongoose.model('KeyData', keyDataSchema);

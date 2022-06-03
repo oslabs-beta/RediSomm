@@ -63,7 +63,7 @@
           "@electron-forge/plugin-webpack",
           {
             "mainConfig": "./webpack.main.config.js",
-            "devContentSecurityPolicy": "connect-src 'self' 'unsafe-eval'",
+            "devContentSecurityPolicy": "connect-src 'self' http://localhost:8080 'unsafe-eval'",
             "renderer": {
               "config": "./webpack.renderer.config.js",
               "entryPoints": [
@@ -86,6 +86,7 @@
     "@electron-forge/maker-squirrel": "^6.0.0-beta.63",
     "@electron-forge/maker-zip": "^6.0.0-beta.63",
     "@electron-forge/plugin-webpack": "^6.0.0-beta.63",
+    "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
     "@types/node": "^17.0.35",
     "@types/node-sass": "^4.11.2",
