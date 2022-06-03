@@ -63,6 +63,7 @@
           "@electron-forge/plugin-webpack",
           {
             "mainConfig": "./webpack.main.config.js",
+            "devContentSecurityPolicy": "connect-src 'self' 'unsafe-eval'",
             "renderer": {
               "config": "./webpack.renderer.config.js",
               "entryPoints": [
@@ -120,6 +121,7 @@
     "ag-grid-community": "^27.3.0",
     "ag-grid-react": "^27.3.0",
     "body-parser": "^1.20.0",
+    "cors": "^2.8.5",
     "electron-squirrel-startup": "^1.0.0",
     "nodemon": "^2.0.16",
     "react": "^18.1.0",

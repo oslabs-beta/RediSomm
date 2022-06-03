@@ -10,5 +10,19 @@ module.exports = {
   },
   resolve: {
     extensions: ['.js', '.ts', '.jsx', '.tsx', '.css', '.json', 'sass', 'scss']
+  },
+  devServer: {
+    static: {
+      directory: 'index.html'
+    },
+    historyApiFallBack: true,
+    hot: true,
+    inline: true,
+    port: 8080,
+    allowedHosts: 'all',
+    proxy: {
+      '/api': 'http://localhost:3000',
+      'changeOrigin': true,
+    }
   }
 };

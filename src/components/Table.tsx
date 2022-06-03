@@ -57,16 +57,15 @@ const Table = () => {
 
   useEffect(() =>  {
     // typescript does not support useEffect returning Promises
-    const scopedUseEffect = async () => { 
-      console.log('in use effect')
-      const response = await fetch('/getAll', {headers: {'Content-Type':'application/json'}});
-      const initData = await response.json()
-      console.log(initData)
-      setRowData((prevState : RowDataType[]) : RowDataType[] =>{
-        return [...prevState, ...initData]
-      })
-    } 
-    scopedUseEffect();
+      fetch('http://localhost:8080/getAll')
+      .then(response => console.log(response))
+      .then(initData => initData)
+      .catch(err => console.log(err))
+    //   console.log(initData)
+    //   setRowData((prevState : RowDataType[]) : RowDataType[] =>{
+    //     return [...prevState, ...initData]
+    //   })
+    // } 
   }, [])
 
   return (
