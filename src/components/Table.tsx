@@ -75,16 +75,15 @@ const Table = () => {
   useEffect(() =>  {
     // typescript does not support useEffect returning Promises
     
-    console.log('in use effect')
-    axios('/api/getAll', {headers: {'Content-Type':'application/json'}})
+    axios('http://localhost:8080/api/getAll')
     .then(response => console.log(response))
     .then(initData => initData)
     .catch(err => console.log(err))
     
     // console.log(initData)
     // setRowData((prevState : RowDataType[]) : RowDataType[] =>{
-      //   return [...prevState, ...initData]
-      // })
+    //     return [...prevState, ...initData]
+    //   })
     }, [])
     
     return (

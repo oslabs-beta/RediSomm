@@ -4,7 +4,7 @@ const PORT = 8080;
 const path = require('path');
 import { apiRouter } from './routes/api';
 import { mongoController } from './controller/mongoController';
-const cors = require('cors');
+import cors from 'cors';
 
 // const userApiRouter = require('./routers/userApi.js');???
 // const reviewApiRouter = require('./routers/reviewApi.js');???
@@ -13,7 +13,6 @@ const cors = require('cors');
 app.use(cors());
 app.use(express.json());
 app.use(express.static('../../.Webpack/renderer/assets'));
-app.use(require('body-parser').json());
 app.use(express.urlencoded());
 // app.use(cookieParser());
 
