@@ -14,5 +14,17 @@ module.exports = {
   plugins: plugins,
   resolve: {
     extensions: ['.js', '.ts', '.jsx', '.tsx', '.css', 'scss', 'sass', 'png']
+  },
+  devServer: {
+    static: {
+      directory: 'index.html'
+    },
+    port: 3000,
+    allowedHosts: 'all',
+    proxy: {
+      '/api/**': {
+        target: 'http://localhost:8080'
+      }
+    }
   }
 };
