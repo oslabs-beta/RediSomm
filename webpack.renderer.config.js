@@ -19,14 +19,12 @@ module.exports = {
     static: {
       directory: 'index.html'
     },
-    historyApiFallBack: true,
-    hot: true,
-    inline: true,
-    port: 8080,
+    port: 3000,
     allowedHosts: 'all',
     proxy: {
-      '/api': 'http://localhost:3000',
-      'changeOrigin': true,
+      '/api/**': {
+        target: 'http://localhost:8080'
+      }
     }
   }
 };

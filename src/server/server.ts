@@ -1,6 +1,6 @@
 import express from 'express';
 const app = express();
-const PORT = process.env.PORT || 8080;
+const PORT = 8080;
 const path = require('path');
 import { apiRouter } from './routes/api';
 import { mongoController } from './controller/mongoController';
@@ -29,19 +29,16 @@ app.use(express.urlencoded());
 //       })
 //   })
 
-app.use('/api', apiRouter);
-
 //READ 1
 app.get(
-  '/getAll',
-  () => {
-    console.log('hi');
-  },
+  '/api/getAll',
   mongoController.getAllRecords,
   ({ req, res }: { req: any; res: any }) => {
     res.status(200).send(res.locals.allRecords);
   }
 );
+
+app.use('/api', apiRouter);
 
 // GLOBAL ERROR HANDLER
 //   app.use((err, req, res, next) => {
