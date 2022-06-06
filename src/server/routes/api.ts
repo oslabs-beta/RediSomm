@@ -36,9 +36,9 @@ router.get('/getLiveAndExpiredKeyRecord/:key', mongoController.getLiveAndExpired
 
 // //READ 7
 
-// router.get('/getTTLforKey/:key', mongoController.getTTLforKey, (req: Request, res: Response) => {
-//     res.status(200).send(res.locals.ttl, res.locals.value);
-// }); 
+router.get('/getTTLforKey/:key', mongoController.getTTLforKey, (req: Request, res: Response) => {
+    res.status(200).send(res.locals.ttl);
+}); 
 
 // //CREATE 1 - create key value pair
 // router.post('/createKVP', redisController.createKVP, mongoController.getKey, mongoController.createKVP, (req: Request, res: Response) => {
