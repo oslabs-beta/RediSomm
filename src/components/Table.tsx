@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useMemo, useRef} from 'react';
-// import DataRow from './DataRow';
+
 import {AgGridReact} from 'ag-grid-react';
 import {AgGridReact as AgGridReactType} from 'ag-grid-react/lib/agGridReact'
 import axios from 'axios';
@@ -54,14 +54,15 @@ const Table = () => {
   const [columnDefs, setColumnDefs] = useState<Object[]>([
     {field: 'key', headerName: 'key', resizeable: true},
     {field: 'value', headerName: 'value'},
-    {field: 'TTL', headerName: 'TTL'},
-    //just testing;
-    {field:'expired', headerName: 'status'},
+    {field: 'ttl', headerName: 'TTL', cellRenderer: ({value: ttl}: any) => {
+      return ttl ? ttl : 'n/a';
+  }},
+    {field:'expired', headerName: 'status', cellRenderer: ({value : isExpired}: any) => {
+      return isExpired ? 'Expired' : 'Active';
+  }},
     {field: 'dataType', headerName: 'type'},
     {field: 'size', headerName: 'size'},
-    // {field: 'keyspace misses'},
-    // {field: 'Added'},
-    // {field: 'del'},
+
   ])
   
   const gridOptions: Object = {
@@ -90,7 +91,7 @@ const Table = () => {
   }
   // get initial data and display on main table
   useEffect(() =>  {
-    // {dataType, expirationTime, expired, key, keyspaceHit, keyspaceMiss, manualDelete, oldKeynames, oldValues, timeAdded, value}
+    // {dataType, expirationTime, expired, key, keyspaceHit, keyspaceMiss, manualDelete, oldKeynames, oldValues, timeAdded, value, ttl, size}
     axios('http://localhost:8080/api/getAll')
     .then(response => response.data)
     .then((data) =>{
@@ -102,15 +103,7 @@ const Table = () => {
     .catch(err => console.log(err))
 
     }, [])
-    
-  // convert expirationTime into something usable
-  // useEffect(()=> {
-  //   setRowData((prevState : RowDataType[]) => {
-  //     prevState.map(({expirationTime}) => {
-  //       // take expiration time, and convert to TTL
-  //     })
-  //   })
-  // }, [initLoad])
+
 
     return (
       <div className="table main-table ag-theme-alpine-dark">
@@ -124,8 +117,8 @@ const Table = () => {
       defaultColDef={defaultColDef}
       onGridSizeChanged={onGridSizeChanged}
       onGridReady={onGridReady}
-     />
-     </div>
+      />
+      </div>
 
     </div>
   );
@@ -133,17 +126,3 @@ const Table = () => {
 
 export default Table;
 
-// export type ExpirationTimeType = (string | null);
-// export type DataRowType = {
-//   dataKey: string;
-//   dataValue: string;
-//   dataExpirationTime: ExpirationTimeType;
-//   dataType: string;
-//   dataIsExpired: boolean;
-
-// }
-
-// const fakeData : DataRowType[] = [
-//   {dataKey: "data1", dataValue: "value1", dataExpirationTime: null, dataType: "string", dataIsExpired: false},
-//   {dataKey: "data2", dataValue: "value2", dataExpirationTime: "september", dataType: "string", dataIsExpired: false}
-// ]
