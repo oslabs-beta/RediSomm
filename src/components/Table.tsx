@@ -28,24 +28,17 @@ export type RowDataType = {
 const Table = () => {
   const gridRef = useRef<AgGridReactType>(null);
 
+  const [initLoad, setInitLoad] = useState<boolean>(false)
   const [rowData, setRowData] = useState<Object[]>([
-    {key: 'data1', value: 'value1', TTL: 'no', type: 'array', status: 'false', size: '5'},
-    {key: 'data2', value: 'value2', TTL: 'no', type: 'array', status: 'false', size: '16'},
-    {key: 'data3', value: 'value3', TTL: '42069', type: 'string', status: 'false', size: '12'},
-    {key: 'Young', value: 'det. pikachu', TTL: 'no', type: 'string', status: 'false', size: '1'},
-    {key: 'Andrew', value: 'psyduck', TTL: '200', type: 'string', status: 'false', size: '6'},
-    {key: 'Andrea', value: 'charizard', TTL: 'no', type: 'string', status: 'false', size: '2'},
-    {key: 'Sam', value: 'Mr. Mime', TTL: 'n/a', type: 'string', status: 'expired', size: '31'},
-    {key: 'Eric', value: 'snorlax', TTL: 'n/a', type: 'string', status: 'expired', size: '24'},
   ])
   const [columnDefs, setColumnDefs] = useState<Object[]>([
-    {field: 'key', resizeable: true},
-    {field: 'value'},
-    {field: 'TTL'},
+    {field: 'key', headerName: 'key', resizeable: true},
+    {field: 'value', headerName: 'value'},
+    {field: 'TTL', headerName: 'TTL'},
     //just testing;
-    {field:'status'},
-    {field: 'type'},
-    {field: 'size'},
+    {field:'expired', headerName: 'status'},
+    {field: 'dataType', headerName: 'type'},
+    {field: 'size', headerName: 'size'},
     // {field: 'keyspace misses'},
     // {field: 'Added'},
     // {field: 'del'},
@@ -54,9 +47,7 @@ const Table = () => {
   const onGridReady = (params: any) => {
     const {api, columnApi} = gridRef.current
     if (api === null || columnApi === null) {return;}
-
     params.api.sizeColumnsToFit()
-
   }
 
   const gridOptions: Object = {
@@ -72,20 +63,30 @@ const Table = () => {
     resizable: true,
   }),[])
   
+  // get initial data and display on main table
   useEffect(() =>  {
-    // typescript does not support useEffect returning Promises
-    
+    // {dataType, expirationTime, expired, key, keyspaceHit, keyspaceMiss, manualDelete, oldKeynames, oldValues, timeAdded, value}
     axios('http://localhost:8080/api/getAll')
-    .then(response => console.log(response))
-    .then(initData => initData)
+    .then(response => response.data)
+    .then((data) =>{
+      setRowData((prevState : RowDataType[]) : RowDataType[] =>{
+        return [...prevState, ...data]
+      })
+      setInitLoad(true);
+    })
     .catch(err => console.log(err))
-    
-    // console.log(initData)
-    // setRowData((prevState : RowDataType[]) : RowDataType[] =>{
-    //     return [...prevState, ...initData]
-    //   })
+
     }, [])
     
+  // convert expirationTime into something usable
+  // useEffect(()=> {
+  //   setRowData((prevState : RowDataType[]) => {
+  //     prevState.map(({expirationTime}) => {
+  //       // take expiration time, and convert to TTL
+  //     })
+  //   })
+  // }, [initLoad])
+
     return (
       <div className="table main-table ag-theme-alpine-dark">
       <div className="ag-grid-main">     

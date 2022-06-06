@@ -1,4 +1,18 @@
 @import 'variables';
+@import "~ag-grid-community/src/styles/ag-grid.scss";
+@import "~ag-grid-community/src/styles/ag-theme-alpine-dark/sass/ag-theme-alpine-dark-mixin";
+
+.ag-theme-alpine-dark {
+    @include ag-theme-alpine-dark((
+        // use theme parameters where possible
+        foreground-color: deeppink
+    ));
+
+    .ag-header {
+        // or write CSS selectors to make customisations beyond what the parameters support
+        color: pink;
+    }
+}
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
@@ -25,6 +39,8 @@ body {
     width: 100%;
   }
 }
+
+
 
 // .window-display {
 //   display: flex;
