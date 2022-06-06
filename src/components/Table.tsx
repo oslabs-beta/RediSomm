@@ -7,9 +7,28 @@ import axios from 'axios';
 
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine-dark.css'
-import { GridApi } from 'ag-grid-community';
+import { GridApi, ColumnApi } from 'ag-grid-community';
 import { application } from 'express';
 import { GridBodyScrollFeature } from 'ag-grid-community/dist/lib/gridBodyComp/gridBodyScrollFeature';
+
+
+export type GridReadyEvent = {
+  api: GridApi;
+  columnApi: ColumnApi;
+  // Event identifier 
+  type: string;
+}
+
+export type GridSizeChangedEvent = {
+  // The grid's DIV's clientWidth 
+  clientWidth: number;
+  // The grid's DIV's clientHeight 
+  clientHeight: number;
+  api: GridApi;
+  columnApi: ColumnApi;
+  // Event identifier 
+  type: string;
+}
 
 export type RowDataType = {
   key: string,
@@ -24,6 +43,7 @@ export type RowDataType = {
   oldValues: string[],
   manualDelete: boolean
 }
+
 
 const Table = () => {
   const gridRef = useRef<AgGridReactType>(null);
@@ -43,18 +63,12 @@ const Table = () => {
     // {field: 'Added'},
     // {field: 'del'},
   ])
-  // ANY placeholder until i find the actual exported type of on grid ready...
-  const onGridReady = (params: any) => {
-    const {api, columnApi} = gridRef.current
-    if (api === null || columnApi === null) {return;}
-    params.api.sizeColumnsToFit()
-  }
-
-  const gridOptions: Object = {
   
+  const gridOptions: Object = {
     rowSelection: 'multiple',
     animateRows: true
   }
+
   const defaultColDef = useMemo(()=> ({
     sortable : true,
     filter: true,
@@ -63,6 +77,17 @@ const Table = () => {
     resizable: true,
   }),[])
   
+  const onGridReady = (params: GridReadyEvent) => {
+    const {api, columnApi} = gridRef.current
+    if (api === null || columnApi === null) {return;}
+    params.api.sizeColumnsToFit()
+  }
+
+  const onGridSizeChanged = (params: GridSizeChangedEvent) => {
+    const {api, columnApi} = gridRef.current
+    if (api === null || columnApi === null) {return;}
+    params.api.sizeColumnsToFit()
+  }
   // get initial data and display on main table
   useEffect(() =>  {
     // {dataType, expirationTime, expired, key, keyspaceHit, keyspaceMiss, manualDelete, oldKeynames, oldValues, timeAdded, value}
@@ -97,6 +122,7 @@ const Table = () => {
       rowData={rowData}
       columnDefs={columnDefs}
       defaultColDef={defaultColDef}
+      onGridSizeChanged={onGridSizeChanged}
       onGridReady={onGridReady}
      />
      </div>
