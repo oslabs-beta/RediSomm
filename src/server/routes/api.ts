@@ -3,23 +3,32 @@ const express = require('express');
 import { redisController } from '../controller/redisController';
 import { mongoController } from '../controller/mongoController';
 const router = express.Router();
-import { Request, Response, Router, NextFunction } from 'express';
+import { Request, Response } from 'express';
 
+
+//CREATE 1 FOR REDIS TESTING ONLY- create key value pair
+router.post('/createKVP', redisController.createKVP, async (req: Request, res: Response) => {
+  return res.status(200).send( `{${res.locals.key}: ${res.locals.value}} key value pair has been set!`);
+});
+// //CREATE 2 - create key value pair with TTL
+router.post('/createKVPTTL', redisController.createKVPTTL, mongoController.getKey, mongoController.createKVPTTL,async (req: Request, res: Response) => {
+  return res.status(200).send( `{${res.locals.key}: ${res.locals.value} key value pair has been set with a TTL: ${res.locals.ttl}}!`);
+});
 
 
 //READ 2 - get live value for a live key
-router.get('/getLiveValue/:key', redisController.getLiveValue, (req: Request, res: Response) => {
-    res.status(200).send(res.locals.liveValue);
-}); 
+// router.get('/getLiveValue/:key', redisController.getLiveValue, (req: Request, res: Response) => {
+//     res.status(200).send(res.locals.liveValue);
+// }); 
 
 //READ 3 - get live values for given keys
-router.get('/getLiveValues/:keys', redisController.getLiveValues, (req: Request, res: Response) => {
-    res.status(200).send(res.locals.liveValues);
-}); 
+// router.get('/getLiveValues/:keys', redisController.getLiveValues, (req: Request, res: Response) => {
+//     res.status(200).send(res.locals.liveValues);
+// }); 
 
-//READ 4 -  get all live keys for given keys
-router.get('/getAllLiveKeys/:keys', redisController.getAllLiveKeys, (req: Request, res: Response) => {
-    res.status(200).send(res.locals.allLiveKeys);
+//READ 4 -  get all live keys in db
+router.get('/getAllLiveKeys',  redisController.getAllLiveKeys, async (req: Request, res: Response) => {
+   return res.status(200).send(res.locals.allLiveKeys);
 }); 
 
 //READ 5
@@ -40,15 +49,8 @@ router.get('/getLiveAndExpiredKeyRecord/:key', mongoController.getLiveAndExpired
 //     res.status(200).send(res.locals.ttl, res.locals.value);
 // }); 
 
-// //CREATE 1 - create key value pair
-// router.post('/createKVP', redisController.createKVP, mongoController.getKey, mongoController.createKVP, (req: Request, res: Response) => {
-//     res.status(200).send(res.locals.kvPair);
-// });
 
-// //CREATE 2 - create key value pair with TTL
-// router.post('/createKVPTTL', redisController.createKVPTTL, mongoController.getKey, mongoController.createKVPTTL, (req: Request, res: Response) => {
-//     res.status(200).send(res.locals.createKVPTTL);
-// });
+
 
 
 // //UPDATE 1 - update key name

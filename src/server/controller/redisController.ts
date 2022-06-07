@@ -1,23 +1,37 @@
-// create redis client
-const redis = require('redis');
-const redisMockDB = 'redis-15765.c99.us-east-1-4.ec2.cloud.redislabs.com:15765'
-const client = redis.createClient();  //OR SEE BELOW
-// const client = redis.createClient({
-//   host: process.env.REDIS_HOST,
-//   port: parseInt(process.env.REDIS_PORT),
-//   password: process.env.REDIS_PASSWORD,
-// });
+const Redis = require("ioredis");
+const redisMockDB = 'redis-15765.c99.us-east-1-4.ec2.cloud.redislabs.com:15765';
+const USERNAME_REDIS = 'default';
+const PASSWORD_REDIS = 'SgIZ6wpz8FoVU37hZ0kycjRRTyXjHZpH';
+const PORT_REDIS = process.env.PORT || 6379;
+const HOST_REDIS = process.env.HOST || '127.0.0.1';
+const client = new Redis({
+        uri: 'redis://USERNAME_REDIS:PASSWORD_REDIS@HOST_REDIS:PORT_REDIS/redisMockDB'
+    // host: HOST_REDIS,
+    // port: PORT_REDIS,
+    // password: 'SgIZ6wpz8FoVU37hZ0kycjRRTyXjHZpH'
+    //removed password because I got an error msg that said "default" user does not require a password
+});
+
 // By default, redis.createClient() will use 127.0.0.1 and 6379 as the hostname and port respectively
-//import { Params, Query } from '../../types'
-import { promisify } from "util";
+
+
+client.on('connect', () => 
+    console.log('Redis is Connected!'));
+        
+   client.on('error',  (err: NodeJS.ErrnoException) =>    console.log('Redis Client Error!', err)
+); 
 
 // redis.js doesn't support async utils as of writing this article
 // we can use the recommended workaround
-export const getAsync = promisify(client.get).bind(client);
-export const setAsync = promisify(client.set).bind(client);
+// export const getAsync = promisify(client.get).bind(client);
+// export const setAsync = promisify(client.set).bind(client);
 // We will use getAsync to get the values from Redis store and setAsync to set values in our Redis store.
 
-import { Request, Response, Router, NextFunction } from 'express';
+
+
+import { Request, Response, Router, NextFunction, RequestHandler } from 'express';
+import { getNodeMajorVersion } from 'typescript';
+import { callbackify } from 'util';
 
 type Params = {
     key: string;
@@ -26,65 +40,65 @@ type Params = {
 // We need to modify our APIs to use Cache when we request data, via Get requests.
 
 
-// app.get("/api/<resource>", async (req, res) => {
-//     try {
-//         // Get from cache using the "Key"
-//         const getRes = await getAsync("resourceKey");
-//         if (getRes)
-//             return res.json({ success: true, data: JSON.parse(getRes) });
 
-//         // On cache-miss => query database
-//         const users = await <Model>.find({});
-
-//         // Set cache
-//         await setAsync("resourceKey",   // Key
-//             JSON.stringify({ res }),        // Value
-//             "EX",                         // Set explicit expiry
-//             60                            // TTL in seconds
-//         );
-
-//         return res.status(200).json({ success: true, data: <resource>});
-//     } catch (error) {
-//         // Handle errors
-//     }
-// });
 interface RequestParams extends Params {
     key: string
 }
 interface Key {
     key: String;
 }
+type redisController = {
+    createKVP: RequestHandler, 
+    createKVPTTL: RequestHandler,
+    getLiveValue: RequestHandler,
+    getLiveValues: RequestHandler,
+    getAllLiveKeys:RequestHandler,
+    updateKeyName: RequestHandler,
+    updateValue: RequestHandler,
+    appendValue: RequestHandler,
+    addExpireTime: RequestHandler,
+    removeExpireTime: RequestHandler,
+    deleteKey: RequestHandler
+}
+//  If you do not provide a callback function, the ioredis function returns a promise which resolves to "OK" when the command succeeds.The first argument is usually the Redis key to run the command against. You can also add an optional error first callback function after the other arguments.
 
-export const redisController = {
-    //CREATE 1 - create key value pair
-    createKVP: (req: Request , res: Response, next: NextFunction): void => {
-        const { key, value }   = req.body;
-        client.set(key, function (err: NodeJS.ErrnoException, reply: Buffer) {
-            res.locals.kvPair = reply;
-            return next();
-        })
-        .catch((err: NodeJS.ErrnoException) => {
+export const redisController: redisController = {
+//CREATE 1 - create key value pair
+    createKVP:   async (req: Request, res: Response, next: NextFunction) => {
+            const { key, value } = req.body;
+        try {
+            const result = await client.set(key, value);    
+            if (result === "OK") {
+                res.locals.key = key;
+                res.locals.value = value;
+                return next();
+            }
+  } catch (err) {
+                const defaultErr = {
+                    log: 'ERROR found in redisController.createKVP',
+                    message: { err: `There was an error ${err}` }
+                };
+                    return next(defaultErr);
+                }
+},
+//CREATE 2 - create key value pair and TTL ****TEST IN POSTMAN WHEN MONGO CONTROLLERS ARE DONE***
+   createKVPTTL: async (req: Request , res: Response, next: NextFunction) => {
+       const { key, value, ttl } = req.body;
+               try {
+                   const result = await client.setex(key, value, ttl); 
+                    if (result === "OK") {
+                        res.locals.key = key;
+                        res.locals.value = value;
+                        res.locals.ttl = ttl;
+                        return next();
+            }
+        } catch(err) {
             const defaultErr = {
-                log: 'ERROR found in mongoController.getAllRecords',
+                log: 'ERROR found in redisController.createKVPTTL',
                 message: { err: `There was an error ${err}` },
             };
             return next(defaultErr);
-        })
-    },
-    //CREATE 2 - create key value pair and TTL 
-   createKVPTTL: (req: Request , res: Response, next: NextFunction): void => {
-        const { key, value, ttl }   = req.body;
-        client.setex(key, function (err: NodeJS.ErrnoException, reply: Buffer) {
-            res.locals.createKVPTTL = reply;
-            return next();
-        })
-        .catch((err: NodeJS.ErrnoException) => {
-            const defaultErr = {
-                log: 'ERROR found in mongoController.getAllRecords',
-                message: { err: `There was an error ${err}` },
-            };
-            return next(defaultErr);
-        })
+        }
     },
    //READ 1 IS IN API.TS
     //READ 2 - read live value from live key
@@ -117,20 +131,59 @@ export const redisController = {
                 return next(defaultErr);
             })
     },
+    //READ 4 - FOR TESTING ONLY get all live keys
+    getAllLiveKeys: async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const result = await client.keys('*');
+              if (result === "OK") {
+                res.locals.liveValues = result;
+
+                        return next();
+            }
+            
+                if (err) {
+                   const defaultErr = {
+                log: 'ERROR found in redisController.getAllLiveKeys',
+                message: { err: `There was an error ${err}` },
+              };
+              return next(defaultErr);
+       }
+        res.locals.liveValues = replies;
+        return next();
+      });    
+    },
     //READ 4 - get all live keys
-    getAllLiveKeys: (req: Request, res: Response, next: NextFunction): void => {
-        client.keys('*', function (err: NodeJS.ErrnoException, reply: Buffer) {
-            res.locals.liveValue = reply;
-            return next();
-        })
+    // getAllRecords: (req: Request, res: Response, next: NextFunction): void => {
+    //     KeyData.find({}, function (err: NodeJS.ErrnoException, result: Buffer){
+    //     if (err) {
+    //         const defaultErr = {
+    //             log: 'ERROR found in mongoController.getAllRecords',
+    //             message: { err: `There was an error ${err}` },
+    //           };
+    //           return next(defaultErr);
+    //     }
+    //     res.locals.allRecords = result;
+    //     return next();
+    //   });
+    // }
+   /*getAllLiveKeys: (req: Request, res: Response, next: NextFunction): void => {
+        // console.log(req);
+                  console.log('hi');
+
+       client.keys('*', function (err: NodeJS.ErrnoException, replies: Buffer) {
+           console.log(replies);
+           res.locals.liveValues = replies;
+           console.log(err);
+           return next(res.locals.liveValues);
+       })
             .catch((err: NodeJS.ErrnoException) => {
                 const defaultErr = {
-                    log: 'ERROR found in mongoController.getAllLiveKeys',
+                    log: 'ERROR found in redisController.getAllLiveKeys',
                     message: { err: `There was an error ${err}` },
                 };
                 return next(defaultErr);
             })
-    },
+    },*/
 
     //UPDATE 1 - update key name
     updateKeyName: (req: Request, res: Response, next: NextFunction): void => {
@@ -239,9 +292,11 @@ export const redisController = {
 
 
 
+console.log("after");
 
 
-client.on('connect', function () {
-    console.log('Redis Connected!');
-});
-
+// module.exports.init = () => {
+//     const cacheInstance = redis.createClient('redis://redis-15765.c99.us-east-1-4.ec2.cloud.redislabs.com:15765');
+//     clients.cacheInstance = cacheInstance;};
+// module.exports.getClients = () => {};
+// module.exports.closeConnections = () => {};
