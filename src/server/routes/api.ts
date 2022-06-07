@@ -45,9 +45,9 @@ router.get('/getLiveAndExpiredKeyRecord/:key', mongoController.getLiveAndExpired
 
 // //READ 7
 
-// router.get('/getTTLforKey/:key', mongoController.getTTLforKey, (req: Request, res: Response) => {
-//     res.status(200).send(res.locals.ttl, res.locals.value);
-// }); 
+router.get('/getTTLforKey/:key', mongoController.getTTLforKey, (req: Request, res: Response) => {
+    res.status(200).send(res.locals.ttl);
+}); 
 
 
 

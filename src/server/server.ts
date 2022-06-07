@@ -4,8 +4,10 @@ const PORT = 8080;
 const path = require('path');
 import { apiRouter } from './routes/api';
 import { mongoController } from './controller/mongoController';
-const cors = require('cors');
-import { Request, Response, NextFunction} from 'express';
+import cors from 'cors';
+import { Response, Request, NextFunction } from 'express';
+// const userApiRouter = require('./routers/userApi.js');???
+// const reviewApiRouter = require('./routers/reviewApi.js');???
 // const cookieParser = require('cookie-parser');
 
 app.use(cors());
