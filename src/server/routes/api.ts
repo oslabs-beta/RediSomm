@@ -81,8 +81,8 @@ router.get('/getTTLforKey/:key', mongoController.getTTLforKey, (req: Request, re
 
 
 // //DELETE 1 - delete key 
-// router.patch('/deleteKey', redisController.deleteKey, mongoController.deleteKey, (req: Request, res: Response) => {
-//     res.status(200);
-// });
+router.patch('/deleteKey', redisController.deleteKey, mongoController.deleteKey, (req: Request, res: Response) => {
+    res.status(200);
+});
 
 export const apiRouter = router;

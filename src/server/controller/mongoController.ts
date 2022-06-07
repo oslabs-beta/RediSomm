@@ -10,6 +10,7 @@ type mongoController = {
     getTTLforKey: RequestHandler,
     getKey: RequestHandler,
     createKVP: RequestHandler,
+    deleteKey: RequestHandler,
 }
 
 type resultObject = {
@@ -82,7 +83,7 @@ getLiveAndExpiredKeyRecord: (req: Request, res: Response, next: NextFunction): v
 //READ 7
 getTTLforKey: (req: Request, res: Response, next: NextFunction): void => {
   const key = req.params.key;
-    KeyData.findOne({ 'key': key, "expire": false }, function (err: NodeJS.ErrnoException, result: resultObject){
+    KeyData.findOne({ 'key': key, "expired": false }, function (err: NodeJS.ErrnoException, result: resultObject){
     if (err) {
         const defaultErr = {
             log: 'ERROR found in mongoController.getTTlforKey',
@@ -145,7 +146,7 @@ createKVP: (req: Request, res: Response, next: NextFunction): void => {
               return next(defaultErr);
         }
         res.locals.kvPair = result;
-        // Need to finish
+        // need to finish
         return next();
       })
   }
@@ -164,4 +165,17 @@ createKVP: (req: Request, res: Response, next: NextFunction): void => {
 //UPDATE 5
 
 //DELETE 1
+deleteKey: (req: Request, res: Response, next: NextFunction): void => {
+  const key = req.params.key;
+    KeyData.findOneAndUpdate({ 'key': key, 'expired': false }, { 'expired': true, 'manualDelete': true }, function (err: NodeJS.ErrnoException, result: resultObject){
+    if (err) {
+        const defaultErr = {
+            log: 'ERROR found in mongoController.deleteKey',
+            message: { err: `There was an error ${err}` },
+          };
+          return next(defaultErr);
+    }
+    return next();
+  });
+},
 };
