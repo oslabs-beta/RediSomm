@@ -18,7 +18,8 @@ mongoose.connect(URI, {
 const keyDataSchema = new Schema ({
     key: String,
     value: String,
-    expirationTime: { type: String, default: null },
+    ttl: Number,
+    expirationTime: { type: Date, default: null },
     dataType: String,
     expired: { type: Boolean, default: false },
     keyspaceMiss: Number,
@@ -26,7 +27,8 @@ const keyDataSchema = new Schema ({
     timeAdded: Date,
     oldKeyNames: Array, 
     oldValues: Array,
-    manualDelete: Boolean
+    manualDelete: Boolean,
+    size: Number
 });
 
 const redisMetricSchema = new Schema ({
@@ -35,7 +37,8 @@ const redisMetricSchema = new Schema ({
     hitRate: Number, 
     hitMissesPerSec: Number,
     keyspaceMiss: Number,
-    keyspaceHit: Number
+    keyspaceHit: Number,
+    metricsDate: Date
 });
 
 const KeyData = mongoose.model('KeyData', keyDataSchema);

@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useMemo, useRef} from 'react';
-// import DataRow from './DataRow';
+
 import {AgGridReact} from 'ag-grid-react';
 import {AgGridReact as AgGridReactType} from 'ag-grid-react/lib/agGridReact'
 import axios from 'axios';
@@ -7,9 +7,28 @@ import axios from 'axios';
 
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine-dark.css'
-import { GridApi } from 'ag-grid-community';
+import { GridApi, ColumnApi } from 'ag-grid-community';
 import { application } from 'express';
 import { GridBodyScrollFeature } from 'ag-grid-community/dist/lib/gridBodyComp/gridBodyScrollFeature';
+
+
+export type GridReadyEvent = {
+  api: GridApi;
+  columnApi: ColumnApi;
+  // Event identifier 
+  type: string;
+}
+
+export type GridSizeChangedEvent = {
+  // The grid's DIV's clientWidth 
+  clientWidth: number;
+  // The grid's DIV's clientHeight 
+  clientHeight: number;
+  api: GridApi;
+  columnApi: ColumnApi;
+  // Event identifier 
+  type: string;
+}
 
 export type RowDataType = {
   key: string,
@@ -25,45 +44,32 @@ export type RowDataType = {
   manualDelete: boolean
 }
 
+
 const Table = () => {
   const gridRef = useRef<AgGridReactType>(null);
 
+  const [initLoad, setInitLoad] = useState<boolean>(false)
   const [rowData, setRowData] = useState<Object[]>([
-    {key: 'data1', value: 'value1', TTL: 'no', type: 'array', status: 'false', size: '5'},
-    {key: 'data2', value: 'value2', TTL: 'no', type: 'array', status: 'false', size: '16'},
-    {key: 'data3', value: 'value3', TTL: '42069', type: 'string', status: 'false', size: '12'},
-    {key: 'Young', value: 'det. pikachu', TTL: 'no', type: 'string', status: 'false', size: '1'},
-    {key: 'Andrew', value: 'psyduck', TTL: '200', type: 'string', status: 'false', size: '6'},
-    {key: 'Andrea', value: 'charizard', TTL: 'no', type: 'string', status: 'false', size: '2'},
-    {key: 'Sam', value: 'Mr. Mime', TTL: 'n/a', type: 'string', status: 'expired', size: '31'},
-    {key: 'Eric', value: 'snorlax', TTL: 'n/a', type: 'string', status: 'expired', size: '24'},
   ])
   const [columnDefs, setColumnDefs] = useState<Object[]>([
-    {field: 'key', resizeable: true},
-    {field: 'value'},
-    {field: 'TTL'},
-    //just testing;
-    {field:'status'},
-    {field: 'type'},
-    {field: 'size'},
-    // {field: 'keyspace misses'},
-    // {field: 'Added'},
-    // {field: 'del'},
+    {field: 'key', headerName: 'key', resizeable: true},
+    {field: 'value', headerName: 'value'},
+    {field: 'ttl', headerName: 'TTL', cellRenderer: ({value: ttl}: any) => {
+      return ttl ? ttl : 'n/a';
+  }},
+    {field:'expired', headerName: 'status', cellRenderer: ({value : isExpired}: any) => {
+      return isExpired ? 'Expired' : 'Active';
+  }},
+    {field: 'dataType', headerName: 'type'},
+    {field: 'size', headerName: 'size'},
+
   ])
-  // ANY placeholder until i find the actual exported type of on grid ready...
-  const onGridReady = (params: any) => {
-    const {api, columnApi} = gridRef.current
-    if (api === null || columnApi === null) {return;}
-
-    params.api.sizeColumnsToFit()
-
-  }
-
-  const gridOptions: Object = {
   
+  const gridOptions: Object = {
     rowSelection: 'multiple',
     animateRows: true
   }
+
   const defaultColDef = useMemo(()=> ({
     sortable : true,
     filter: true,
@@ -72,21 +78,33 @@ const Table = () => {
     resizable: true,
   }),[])
   
+  const onGridReady = (params: GridReadyEvent) => {
+    const {api, columnApi} = gridRef.current
+    if (api === null || columnApi === null) {return;}
+    params.api.sizeColumnsToFit()
+  }
+
+  const onGridSizeChanged = (params: GridSizeChangedEvent) => {
+    const {api, columnApi} = gridRef.current
+    if (api === null || columnApi === null) {return;}
+    params.api.sizeColumnsToFit()
+  }
+  // get initial data and display on main table
   useEffect(() =>  {
-    // typescript does not support useEffect returning Promises
-    
-    console.log('in use effect')
-    axios('/api/getAll', {headers: {'Content-Type':'application/json'}})
-    .then(response => console.log(response))
-    .then(initData => initData)
+    // {dataType, expirationTime, expired, key, keyspaceHit, keyspaceMiss, manualDelete, oldKeynames, oldValues, timeAdded, value, ttl, size}
+    axios('http://localhost:8080/api/getAll')
+    .then(response => response.data)
+    .then((data) =>{
+      setRowData((prevState : RowDataType[]) : RowDataType[] =>{
+        return [...prevState, ...data]
+      })
+      setInitLoad(true);
+    })
     .catch(err => console.log(err))
-    
-    // console.log(initData)
-    // setRowData((prevState : RowDataType[]) : RowDataType[] =>{
-      //   return [...prevState, ...initData]
-      // })
+
     }, [])
-    
+
+
     return (
       <div className="table main-table ag-theme-alpine-dark">
       <div className="ag-grid-main">     
@@ -97,9 +115,10 @@ const Table = () => {
       rowData={rowData}
       columnDefs={columnDefs}
       defaultColDef={defaultColDef}
+      onGridSizeChanged={onGridSizeChanged}
       onGridReady={onGridReady}
-     />
-     </div>
+      />
+      </div>
 
     </div>
   );
@@ -107,17 +126,3 @@ const Table = () => {
 
 export default Table;
 
-// export type ExpirationTimeType = (string | null);
-// export type DataRowType = {
-//   dataKey: string;
-//   dataValue: string;
-//   dataExpirationTime: ExpirationTimeType;
-//   dataType: string;
-//   dataIsExpired: boolean;
-
-// }
-
-// const fakeData : DataRowType[] = [
-//   {dataKey: "data1", dataValue: "value1", dataExpirationTime: null, dataType: "string", dataIsExpired: false},
-//   {dataKey: "data2", dataValue: "value2", dataExpirationTime: "september", dataType: "string", dataIsExpired: false}
-// ]
