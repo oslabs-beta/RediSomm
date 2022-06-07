@@ -7,7 +7,9 @@ type mongoController = {
     getAllRecords: RequestHandler, 
     getValueRecords: RequestHandler,
     getLiveAndExpiredKeyRecord: RequestHandler,
-    getTTLforKey: RequestHandler
+    getTTLforKey: RequestHandler,
+    getKey: RequestHandler,
+    createKVP: RequestHandler,
 }
 
 type resultObject = {
@@ -93,7 +95,61 @@ getTTLforKey: (req: Request, res: Response, next: NextFunction): void => {
   });
 },
 
+//GET KEY
+getKey: (req: Request, res: Response, next: NextFunction): void => {
+  const { key, value }  = req.body;
+    KeyData.findOne({ 'key': key, 'value': value }, function (err: NodeJS.ErrnoException, result: resultObject){
+    if (err) {
+        const defaultErr = {
+            log: 'ERROR found in mongoController.getKey',
+            message: { err: `There was an error ${err}` },
+          };
+          return next(defaultErr);
+    }
+    if (result !== undefined){
+      res.locals.exists = true; 
+    } else{
+      res.locals.exists = false;
+    }
+    return next();
+  });
+},
+
 //CREATE 1
+createKVP: (req: Request, res: Response, next: NextFunction): void => {
+  const { key, value }  = req.body;
+
+  if (!res.locals.exists){
+    const newKVP = { 
+      'key': key, 
+      'value': value,
+      }
+    KeyData.create( newKVP , function (err: NodeJS.ErrnoException, result: resultObject){
+    if (err) {
+        const defaultErr = {
+            log: 'ERROR found in mongoController.getKey',
+            message: { err: `There was an error ${err}` },
+          };
+          return next(defaultErr);
+    }
+    res.locals.kvPair = result;
+    return next();
+  });
+  } else {
+      const existingKey = KeyData.findOne({'key': key, 'value': value, 'expired': false}, function (err: NodeJS.ErrnoException, result: resultObject){
+        if (err) {
+            const defaultErr = {
+                log: 'ERROR found in mongoController.getKey',
+                message: { err: `There was an error ${err}` },
+              };
+              return next(defaultErr);
+        }
+        res.locals.kvPair = result;
+        // Need to finish
+        return next();
+      })
+  }
+},
 
 //CREATE 2
 

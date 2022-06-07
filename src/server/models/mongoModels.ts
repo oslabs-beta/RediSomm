@@ -18,16 +18,16 @@ mongoose.connect(URI, {
 const keyDataSchema = new Schema ({
     key: String,
     value: String,
-    ttl: Number,
+    ttl: {type: Number, default: null },
     expirationTime: { type: Date, default: null },
-    dataType: String,
+    dataType: { type: String, default: 'string' },
     expired: { type: Boolean, default: false },
-    keyspaceMiss: Number,
-    keyspaceHits: Number, 
-    timeAdded: Date,
-    oldKeyNames: Array, 
-    oldValues: Array,
-    manualDelete: Boolean,
+    keyspaceMiss: { type: Number, default: 0 },
+    keyspaceHits: { type: Number, default: 0 },
+    timeAdded: { type: Date, default: Date.now() },
+    oldKeyNames: { type: Array, default: []}, 
+    oldValues: { type: Array, default: []},
+    manualDelete: { type: Boolean, default: false },
     size: Number
 });
 
