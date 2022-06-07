@@ -20,7 +20,6 @@ const MainWindow = () => {
 
 export default MainWindow;
 
-
 // const Routes = () => {
 //   return (
 //     <div className="window-display">
