@@ -32,7 +32,8 @@ router.get('/getLiveValue/:key', redisController.getLiveValue, async (req: Reque
 
 router.get('/getLiveValues/*', redisController.getLiveValues, async (req: Request, res: Response) => {
     res.status(200).send(res.locals.liveValues);
-}); 
+  }
+);
 
 //READ 4 -  get all live keys in db 
 router.get('/getAllLiveKeys',  redisController.getAllLiveKeys, async (req: Request, res: Response) => {
@@ -40,24 +41,43 @@ router.get('/getAllLiveKeys',  redisController.getAllLiveKeys, async (req: Reque
 }); 
 
 //READ 5
-router.get('/getValueRecords/:key', mongoController.getValueRecords, (req: Request, res: Response) => {
+router.get(
+  '/getValueRecords/:key',
+  mongoController.getValueRecords,
+  (req: Request, res: Response) => {
     res.status(200).send(res.locals.valueRecords);
-}); 
-
+  }
+);
 
 //READ 6
-router.get('/getLiveAndExpiredKeyRecord/:key', mongoController.getLiveAndExpiredKeyRecord, (req: Request, res: Response) => {
+router.get(
+  '/getLiveAndExpiredKeyRecord/:key',
+  mongoController.getLiveAndExpiredKeyRecord,
+  (req: Request, res: Response) => {
     res.status(200).send(res.locals.keyRecord);
-}); 
-
+  }
+);
 
 // //READ 7
 
-router.get('/getTTLforKey/:key', mongoController.getTTLforKey, (req: Request, res: Response) => {
+router.get(
+  '/getTTLforKey/:key',
+  mongoController.getTTLforKey,
+  (req: Request, res: Response) => {
     res.status(200).send(res.locals.ttl);
-}); 
+  }
+);
 
-
+// //CREATE 1 - create key value pair
+router.post(
+  '/createKVP',
+  redisController.createKVP,
+  mongoController.getKey,
+  mongoController.createKVP,
+  (req: Request, res: Response) => {
+    res.status(200).send(res.locals.kvPair);
+  }
+);
 
 
 
@@ -76,13 +96,11 @@ router.get('/getTTLforKey/:key', mongoController.getTTLforKey, (req: Request, re
 //     res.status(200).send(res.locals.newValue);
 // });
 
-    
 // //UPDATE 4 - add/set expiration time for key
 // router.patch('/addExpireTime', redisController.appendValue, mongoController.appendValue, (req: Request, res: Response) => {
 //     res.status(200).send(res.locals.addExpireTime);
-// });    
+// });
 
-    
 // //UPDATE 4 - remove expiration time for key
 // router.patch('/removeExpireTime', redisController.removeExpireTime, mongoController.    removeExpireTime, (req: Request, res: Response) => {
 //     res.status(200);

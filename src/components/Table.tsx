@@ -52,7 +52,7 @@ const Table = () => {
   const [rowData, setRowData] = useState<Object[]>([
   ])
   const [columnDefs, setColumnDefs] = useState<Object[]>([
-    {field: 'key', headerName: 'key', resizeable: true},
+    {field: 'key', headerName: 'key', resizable: true},
     {field: 'value', headerName: 'value'},
     {field: 'ttl', headerName: 'TTL', cellRenderer: ({value: ttl}: any) => {
       return ttl ? ttl : 'n/a';
