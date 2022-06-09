@@ -32,6 +32,7 @@ const TableAdd = () => {
       ...submitData, ttl: e.target.value
     }))
   }
+  // backend does not have this set up
   const handleSubmit = async (e: any) => {
     const {key, value, ttl} = submitData;
     e.preventDefault();
