@@ -1,6 +1,6 @@
 import e from 'express';
 import React, {useState} from 'react';
-import axios from axios;
+import axios from 'axios';
 
 export type SubmitDataType = {
   key: string, value: string, ttl: string
@@ -32,10 +32,13 @@ const TableAdd = () => {
       ...submitData, ttl: e.target.value
     }))
   }
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
+    const {key, value, ttl} = submitData;
     e.preventDefault();
-    axios.post('/api/createKVP')
-    setSubmitted(true);
+    const response : Response = await axios.post('/api/createKVP', {key, value, ttl})
+    const confirm = await response.json()
+    if (confirm) setSubmitted(true);
+    setTimeout(()=>{setSubmitted(false)}, 5000)
   };
   return (
     <>
@@ -46,7 +49,7 @@ const TableAdd = () => {
             name="key" 
             type="text"
             value={submitData.key} 
-            className="entry"
+            className="key-entry entry"
             onChange={handleKeyChange}
             />
           <input 
@@ -54,7 +57,7 @@ const TableAdd = () => {
             name="value" 
             type="text"
             value={submitData.value} 
-            className="entry"
+            className="value-entry entry"
             onChange={handleValueChange}
             />
           <input 
@@ -62,7 +65,7 @@ const TableAdd = () => {
             name="ttl" 
             type="text"
             value={submitData.ttl} 
-            className="entry"
+            className="ttl-entry entry"
             onChange={handleTTLChange}
             />
           <button
