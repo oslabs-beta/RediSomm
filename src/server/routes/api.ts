@@ -6,27 +6,35 @@ const router = express.Router();
 import { Request, Response } from 'express';
 
 
-//CREATE 1 FOR REDIS TESTING ONLY- create key value pair
+
+//CREATE 1 FOR REDIS TESTING ONLY- create key value pair - 
 router.post('/createKVP', redisController.createKVP, async (req: Request, res: Response) => {
   return res.status(200).send( `{${res.locals.key}: ${res.locals.value}} key value pair has been set!`);
 });
 // //CREATE 2 - create key value pair with TTL
-router.post('/createKVPTTL', redisController.createKVPTTL, mongoController.getKey, mongoController.createKVPTTL,async (req: Request, res: Response) => {
-  return res.status(200).send( `{${res.locals.key}: ${res.locals.value} key value pair has been set with a TTL: ${res.locals.ttl}}!`);
-});
+// router.post('/createKVPTTL', redisController.createKVPTTL, mongoController.getKey, mongoController.createKVPTTL,async (req: Request, res: Response) => {
+//   return res.status(200).send( `{${res.locals.key}: ${res.locals.value} key value pair has been set with a TTL: ${res.locals.ttl}}!`);
+// });
 
 
 //READ 2 - get live value for a live key
-// router.get('/getLiveValue/:key', redisController.getLiveValue, (req: Request, res: Response) => {
-//     res.status(200).send(res.locals.liveValue);
-// }); 
+router.get('/getLiveValue/:key', redisController.getLiveValue, async (req: Request, res: Response) => {
+  res.status(200).send(res.locals.liveValues);
+  res.send()
+}); 
 
-//READ 3 - get live values for given keys
-// router.get('/getLiveValues/:keys', redisController.getLiveValues, (req: Request, res: Response) => {
-//     res.status(200).send(res.locals.liveValues);
-// }); 
+// READ 3 - get live values for given keys
+      // EXAMPLE:app.get('*', (req, res) => {  (USE '*' IN API)
+        // req.query; // { color: ['black', 'yellow'] } (BUT USE const querystring = '?color=black&color=yellow' ON FRONT END TO GET REQ.QUERY array on backend;)
+        // res.json(req.query);
+      // });
+    //https://masteringjs.io/tutorials/express/query-parameters#:~:text=Each%20key%3Dvalue%20pair%20is,query%20parameters%2C%20a%20and%20b%20.&text=Express%20automatically%20parses%20query%20parameters,the%20request%20object%20as%20req.
 
-//READ 4 -  get all live keys in db
+router.get('/getLiveValues/*', redisController.getLiveValues, async (req: Request, res: Response) => {
+    res.status(200).send(res.locals.liveValues);
+}); 
+
+//READ 4 -  get all live keys in db 
 router.get('/getAllLiveKeys',  redisController.getAllLiveKeys, async (req: Request, res: Response) => {
    return res.status(200).send(res.locals.allLiveKeys);
 }); 
@@ -82,8 +90,8 @@ router.get('/getTTLforKey/:key', mongoController.getTTLforKey, (req: Request, re
 
 
 // //DELETE 1 - delete key 
-// router.patch('/deleteKey', redisController.deleteKey, mongoController.deleteKey, (req: Request, res: Response) => {
-//     res.status(200);
-// });
+router.patch('/deleteKey/:key', redisController.deleteKey, /*mongoController.deleteKey,*/ async (req: Request, res: Response) => {
+    res.status(200).send( `{${res.locals.deletedKey}  key been DELETED!`);
+});
 
 export const apiRouter = router;

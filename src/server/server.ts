@@ -14,6 +14,8 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static('../../.Webpack/renderer/assets'));
 app.use(express.urlencoded());
+// app.set('query parser', 'simple');
+
 // app.use(cookieParser());
 
 //READ 1

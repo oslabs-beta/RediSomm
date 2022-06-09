@@ -36,6 +36,7 @@ import { callbackify } from 'util';
 type Params = {
     key: string;
     keys: string;
+    // multiplekeys: string[];
 };
 // We need to modify our APIs to use Cache when we request data, via Get requests.
 
@@ -62,8 +63,12 @@ type redisController = {
 }
 //  If you do not provide a callback function, the ioredis function returns a promise which resolves to "OK" when the command succeeds.The first argument is usually the Redis key to run the command against. You can also add an optional error first callback function after the other arguments.
 
+// All arguments are passed directly to the redis server, so technically ioredis supports all Redis commands.
+// The format is: redis[SOME_REDIS_COMMAND_IN_LOWERCASE](ARGUMENTS_ARE_JOINED_INTO_COMMAND_STRING)
+// so the following statement is equivalent to the CLI: `redis> SET mykey hello EX 10`******(SHOW THIS TO ANDREW*******)
+
 export const redisController: redisController = {
-//CREATE 1 - create key value pair
+//CREATE 1 - create key value pair - DONE
     createKVP:   async (req: Request, res: Response, next: NextFunction) => {
             const { key, value } = req.body;
         try {
@@ -81,7 +86,7 @@ export const redisController: redisController = {
                     return next(defaultErr);
                 }
 },
-//CREATE 2 - create key value pair and TTL ****TEST IN POSTMAN WHEN MONGO CONTROLLERS ARE DONE***
+//CREATE 2 - create key value pair and TTL - DONE FOR REDIS ONLY  (TBD ****TEST IN POSTMAN WHEN MONGO CONTROLLERS ARE DONE***)
    createKVPTTL: async (req: Request , res: Response, next: NextFunction) => {
        const { key, value, ttl } = req.body;
                try {
@@ -100,90 +105,70 @@ export const redisController: redisController = {
             return next(defaultErr);
         }
     },
-   //READ 1 IS IN API.TS
-    //READ 2 - read live value from live key
-    getLiveValue: (req: Request , res: Response, next: NextFunction): void => {
-        const { key }   = req.params;
-        client.get(key, function (err: NodeJS.ErrnoException, reply: Buffer) {
-            res.locals.liveValue = reply;
-            return next();
-        })
-        .catch((err: NodeJS.ErrnoException) => {
+   //READ 1 IS IN API.TS - DONE
+    //READ 2 - read live value from live key-DONE
+    getLiveValue: async (req: Request, res: Response, next: NextFunction) => {
+        const { key } = req.params;
+         try {
+                await client.get(key)
+                .then((result: Buffer) => {
+                if (result) {
+                    console.log('Print result here:', result);
+                    res.locals.liveValue = result;
+                    return next();
+                }
+                
+            });
+        } 
+         catch(err)  {
+                 const defaultErr = {
+                    log: 'ERROR found in mredisController.getLiveValue',
+                     message: { err: `There was an error ${err}` },
+                 };
+                 return next(defaultErr);
+             }
+    },
+    //READ 3 - read live values for given keys-DONE
+    getLiveValues: async (req: Request, res: Response, next: NextFunction) => {
+        const { keys } = req.query;
+        try {
+            await client.mget(keys).then((result: Buffer) => {
+                if (result) {
+                    console.log('Print result here:', result);
+                    res.locals.liveValues = result;
+                    return next();
+                }
+                
+            });
+        } 
+         catch(err)  {
+                 const defaultErr = {
+                    log: 'ERROR found in mredisController.getLiveValues',
+                     message: { err: `There was an error ${err}` },
+                 };
+                 return next(defaultErr);
+             }
+    },
+    //READ 4 - GET ALL LIVE KEYS - DONE
+    getAllLiveKeys: async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            await client.keys('*').then((result: Buffer) => {
+                if (result) {
+                    console.log('Print result here:', result);
+                    res.locals.allLiveKeys = result;
+                    return next();
+                }
+                
+            });            
+            }
+        catch (err) {
             const defaultErr = {
-                log: 'ERROR found in mongoController.getAllRecords',
+                log: 'ERROR found in redisController.getAllLiveKeys',
                 message: { err: `There was an error ${err}` },
             };
             return next(defaultErr);
-        })
+        }
     },
-    //READ 3 - read live values for given keys
-    getLiveValues: (req: Request, res: Response, next: NextFunction): void => {
-        const { keys } = req.params;
-        client.get(keys, function (err: NodeJS.ErrnoException, reply: Buffer) {
-            res.locals.liveValues = reply;
-            return next();
-        })
-            .catch((err: NodeJS.ErrnoException) => {
-                const defaultErr = {
-                    log: 'ERROR found in mongoController.getLiveValues',
-                    message: { err: `There was an error ${err}` },
-                };
-                return next(defaultErr);
-            })
-    },
-    //READ 4 - FOR TESTING ONLY get all live keys
-    getAllLiveKeys: async (req: Request, res: Response, next: NextFunction) => {
-        try {
-            const result = await client.keys('*');
-              if (result === "OK") {
-                res.locals.liveValues = result;
-
-                        return next();
-            }
-            
-                if (err) {
-                   const defaultErr = {
-                log: 'ERROR found in redisController.getAllLiveKeys',
-                message: { err: `There was an error ${err}` },
-              };
-              return next(defaultErr);
-       }
-        res.locals.liveValues = replies;
-        return next();
-      });    
-    },
-    //READ 4 - get all live keys
-    // getAllRecords: (req: Request, res: Response, next: NextFunction): void => {
-    //     KeyData.find({}, function (err: NodeJS.ErrnoException, result: Buffer){
-    //     if (err) {
-    //         const defaultErr = {
-    //             log: 'ERROR found in mongoController.getAllRecords',
-    //             message: { err: `There was an error ${err}` },
-    //           };
-    //           return next(defaultErr);
-    //     }
-    //     res.locals.allRecords = result;
-    //     return next();
-    //   });
-    // }
-   /*getAllLiveKeys: (req: Request, res: Response, next: NextFunction): void => {
-        // console.log(req);
-                  console.log('hi');
-
-       client.keys('*', function (err: NodeJS.ErrnoException, replies: Buffer) {
-           console.log(replies);
-           res.locals.liveValues = replies;
-           console.log(err);
-           return next(res.locals.liveValues);
-       })
-            .catch((err: NodeJS.ErrnoException) => {
-                const defaultErr = {
-                    log: 'ERROR found in redisController.getAllLiveKeys',
-                    message: { err: `There was an error ${err}` },
-                };
-                return next(defaultErr);
-            })
-    },*/
 
     //UPDATE 1 - update key name
     updateKeyName: (req: Request, res: Response, next: NextFunction): void => {
@@ -259,21 +244,34 @@ export const redisController: redisController = {
                 return next(defaultErr);
             })
     },
-//DELETE 1 - delete key
-    deleteKey: (req: Request, res: Response, next: NextFunction): void => {
-        client.del('req.body.keyName',  function (err: NodeJS.ErrnoException, reply: Buffer) {
-            const { keyName } = req.body;
-            res.locals.keyName = reply;
-            return next();
-        })
-            .catch((err: NodeJS.ErrnoException) => {
-                const defaultErr = {
-                    log: 'ERROR found in mongoController.deleteKey',
-                    message: { err: `There was an error ${err}` },
-                };
-                return next(defaultErr);
-            })
+//DELETE 1 - delete key - DONE
+    deleteKey: async (req: Request, res: Response, next: NextFunction) => {
+        //****CAN DEL COMMAND DELETE MORE THAN ONE KVP AT A TIME, IF SO CHANGE COND ON RESULT TO GT THAN 0 */
+        const { key } = req.params;
+        console.log(req.params);
+        console.log('hiya');
+         try {
+                await client.del(key)
+                .then((result: Buffer) => {
+                    if (result) {
+                    //promse returns a result of 1 if kvp is deleted but TS is not responding to number type, maybe there is an alterative to buffer that will read a num 
+                    console.log('Print result here:', result);
+                        res.locals.deletedKey = key;
+                        // *****TO INCLUDE VALUE WITH KEY
+                    return next();
+                }
+                
+            });
+        } 
+         catch(err)  {
+                 const defaultErr = {
+                    log: 'ERROR found in mredisController.getLiveValue',
+                     message: { err: `There was an error ${err}` },
+                 };
+                 return next(defaultErr);
+             }
     }
+    
 
 
 
