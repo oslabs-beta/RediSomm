@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 
-const BarGraph: React.FC = () => {
+const BarGraph = () => {
   return (
     <div>
       <h1>Hit Rate: 100%</h1>
