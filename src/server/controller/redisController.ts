@@ -74,6 +74,7 @@ export const redisController: redisController = {
         try {
             const result = await client.set(key, value);    
             if (result === "OK") {
+                //ioredis function returns a promise which resolves to "OK" when the command succeeds.
                 res.locals.key = key;
                 res.locals.value = value;
                 return next();
@@ -91,7 +92,8 @@ export const redisController: redisController = {
        const { key, value, ttl } = req.body;
                try {
                    const result = await client.setex(key, value, ttl); 
-                    if (result === "OK") {
+                   if (result === "OK") {
+                    //ioredis function returns a promise which resolves to "OK" when the command succeeds.
                         res.locals.key = key;
                         res.locals.value = value;
                         res.locals.ttl = ttl;
@@ -171,33 +173,49 @@ export const redisController: redisController = {
     },
 
     //UPDATE 1 - update key name
-    updateKeyName: (req: Request, res: Response, next: NextFunction): void => {
-        client.rename('req.body.oldKeyName', 'req.body.newKeyName', function (err: NodeJS.ErrnoException, reply: Buffer) {
-            const { oldKeyName, newKeyName } = req.body;
-            res.locals.newKeyName = reply;
-            return next();
-        })
-            .catch((err: NodeJS.ErrnoException) => {
+    updateKeyName: async (req: Request, res: Response, next: NextFunction) => {
+        const { oldKeyName, newKeyName } = req.query;
+        console.log(req.query);
+
+        try { 
+            const result = await client.rename(oldKeyName, newKeyName);
+               if (result === 'OK') {
+                //ioredis function returns a promise which resolves to "OK" when the command succeeds.
+                    console.log('Print result here:', result);
+                    res.locals.newKeyName = newKeyName;
+                    return next();
+                }   
+            }
+            catch(err) {
                 const defaultErr = {
-                    log: 'ERROR found in mongoController.updateKeyName',
+                    log: 'ERROR found in redisController.updateKeyName',
                     message: { err: `There was an error ${err}` },
                 };
                 return next(defaultErr);
-            })
+            }
     },
     //UPDATE 2 - update value to given key
-    updateValue: (req: Request, res: Response, next: NextFunction): void => {
-        client.set('req.body.keyName', 'req.body.newValue', function (err: NodeJS.ErrnoException, reply: Buffer) {
-            const { keyName, newValue } = req.body;
-            res.locals.newValue = reply;            return next();
-        })
-            .catch((err: NodeJS.ErrnoException) => {
+    updateValue: async (req: Request, res: Response, next: NextFunction) => {
+        const { key, oldValue, newValue } = req.query;
+        try {
+            const result = await client.set(key, newValue);
+            if (result === 'OK') {
+                //ioredis function returns a promise which resolves to "OK" when the command succeeds.
+                res.locals = {
+                    key: key,
+                    oldValue: oldValue,
+                    newValue: newValue,
+                }
+                return next();
+            }
+        }
+           catch(err) {
                 const defaultErr = {
-                    log: 'ERROR found in mongoController.updateValue',
+                    log: 'ERROR found in redisController.updateValueName',
                     message: { err: `There was an error ${err}` },
                 };
                 return next(defaultErr);
-            })
+            }
     },
  //UPDATE 3 - append value to given key
     appendValue: (req: Request, res: Response, next: NextFunction): void => {
@@ -229,7 +247,7 @@ export const redisController: redisController = {
                 return next(defaultErr);
             })
     },
-//UPDATE 4 - remove expiration time
+//UPDATE 5 - remove expiration time
     removeExpireTime: (req: Request, res: Response, next: NextFunction): void => {
         client.persist('req.body.keyName', 'req.body.expireTime', function (err: NodeJS.ErrnoException, reply: Buffer) {
             const { keyName, expireTime } = req.body;
