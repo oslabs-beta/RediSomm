@@ -6,8 +6,6 @@ import { apiRouter } from './routes/api';
 import { mongoController } from './controller/mongoController';
 import cors from 'cors';
 import { Response, Request, NextFunction } from 'express';
-// const userApiRouter = require('./routers/userApi.js');???
-// const reviewApiRouter = require('./routers/reviewApi.js');???
 // const cookieParser = require('cookie-parser');
 
 app.use(cors());

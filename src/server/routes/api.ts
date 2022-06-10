@@ -25,11 +25,11 @@ router.get('/getLiveValue/:key', redisController.getLiveValue, async (req: Reque
 
 // READ 3 - get live values for given keys
       // EXAMPLE:app.get('*', (req, res) => {  (USE '*' IN API)
-        // req.query; // { color: ['black', 'yellow'] } (BUT USE const querystring = '?color=black&color=yellow' ON FRONT END TO GET REQ.QUERY array on backend;)
-        // res.json(req.query);
+        // req.query; // { keys: ['sam', 'young'] } (BUT USE const querystring = '?keys=sam&keys=young' ON FRONT END TO GET REQ.QUERY array on backend;)
+        // res.json(req.query); //res.livevalues = ['carter','kim']
       // });
     //https://masteringjs.io/tutorials/express/query-parameters#:~:text=Each%20key%3Dvalue%20pair%20is,query%20parameters%2C%20a%20and%20b%20.&text=Express%20automatically%20parses%20query%20parameters,the%20request%20object%20as%20req.
-
+//FYI: REQ.QUERIES ARE FOR EXACT DATA REQUESTED WHEREAS REQ.BODY IS FOR DATA THAT MAY BE UPLOADED OR DOWNLOADED
 router.get('/getLiveValues/*', redisController.getLiveValues, async (req: Request, res: Response) => {
     res.status(200).send(res.locals.liveValues);
   }
@@ -72,8 +72,8 @@ router.get(
 router.post(
   '/createKVP',
   redisController.createKVP,
-  mongoController.getKey,
-  mongoController.createKVP,
+ /* mongoController.getKey,
+  mongoController.createKVP,*/
   (req: Request, res: Response) => {
     res.status(200).send(res.locals.kvPair);
   }
@@ -82,14 +82,14 @@ router.post(
 
 
 // //UPDATE 1 - update key name
-// router.patch('/updateKeyName', redisController.updateKeyName, mongoController.updateKeyName, (req: Request, res: Response) => {
-//     res.status(200).send(res.locals.newKeyName);
-// });
+router.patch('/updateKeyName/*', redisController.updateKeyName,/* mongoController.updateKeyName,*/ async (req: Request, res: Response) => {
+    res.status(200).send(res.locals.newKeyName);
+});
 
-// //UPDATE 2 - update value
-// router.patch('/updateValue', redisController.updateValue, mongoController.updateValue, (req: Request, res: Response) => {
-//     res.status(200).send(res.locals.newValue);
-// });
+//UPDATE 2 - update value  DONE ***** MAYBE TRY PUT ??? IS CHANGING VALUE CONSIDERD SAME AS CHANGING ENTIRE ENTITY??
+router.patch('/updateValue/*', redisController.updateValue,/* mongoController.updateValue,*/ async (req: Request, res: Response) => {
+  res.status(200).send(res.locals)
+});
 
 // //UPDATE 3 - append value
 // router.patch('/appendValue', redisController.appendValue, mongoController.appendValue, (req: Request, res: Response) => {
@@ -101,7 +101,7 @@ router.post(
 //     res.status(200).send(res.locals.addExpireTime);
 // });
 
-// //UPDATE 4 - remove expiration time for key
+// //UPDATE 5 - remove expiration time for key
 // router.patch('/removeExpireTime', redisController.removeExpireTime, mongoController.    removeExpireTime, (req: Request, res: Response) => {
 //     res.status(200);
 // });
