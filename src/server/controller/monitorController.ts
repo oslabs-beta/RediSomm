@@ -38,7 +38,7 @@ export const monitorController: monitorController = {
     try {
       const monitor = await client.monitor();
       monitor.on('monitor', (time: any, args: any, source: any, db: any) => {
-        console.log('Monitoring redis');
+        console.log('now Monitoring redis');
         if (args[0] === 'get') {
           // invoke info, look for keyspace miss, if keyspace miss, log arg[1] keyspace miss +1 in mongo
           //monitorController.keyspaceMissCheck(args[0], args[1])
