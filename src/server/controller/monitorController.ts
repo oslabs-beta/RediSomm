@@ -1,4 +1,5 @@
 import { client } from './redisController';
+import Monitor from '../services/Monitor';
 import {
   Request,
   Response,
@@ -6,7 +7,6 @@ import {
   NextFunction,
   RequestHandler
 } from 'express';
-
 // TODO: route all monitor requests to here, and import Monitor
 /**
  * @types
@@ -36,14 +36,9 @@ export const monitorController: monitorController = {
   // turn monitor on
   onMonitorRedis: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const monitor = await client.monitor();
-      monitor.on('monitor', (time: any, args: any, source: any, db: any) => {
-        console.log('now Monitoring redis');
-        if (args[0] === 'get') {
-          // invoke info, look for keyspace miss, if keyspace miss, log arg[1] keyspace miss +1 in mongo
-          //monitorController.keyspaceMissCheck(args[0], args[1])
-        }
-      });
+      const monitor = new Monitor(client);
+      console.log('monitoring redis');
+      return next();
     } catch (err) {
       return next(defaultErr(err, 'onMonitorRedis'));
     }

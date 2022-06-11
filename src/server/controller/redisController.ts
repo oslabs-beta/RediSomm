@@ -294,7 +294,6 @@ export const redisController: redisController = {
   }
 }; // <- End bracket for redisController DO NOT DELETE
 export { client };
-console.log('after');
 
 // module.exports.init = () => {
 //     const cacheInstance = redis.createClient('redis://redis-15765.c99.us-east-1-4.ec2.cloud.redislabs.com:15765');
