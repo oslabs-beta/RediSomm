@@ -2,11 +2,14 @@
 const express = require('express');
 import { redisController } from '../controller/redisController';
 import { mongoController } from '../controller/mongoController';
+import { monitorController } from '../controller/monitorController';
 const router = express.Router();
 import { Request, Response } from 'express';
 
 
-
+router.get('/monitor', monitorController.onMonitorRedis, (req: Request, res: Response) => {
+  return res.status(418).send('monitoring the database')
+})
 //CREATE 1 FOR REDIS TESTING ONLY- create key value pair - 
 router.post('/createKVP', redisController.createKVP, async (req: Request, res: Response) => {
   return res.status(200).send( `{${res.locals.key}: ${res.locals.value}} key value pair has been set!`);
