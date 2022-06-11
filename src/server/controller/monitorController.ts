@@ -7,9 +7,7 @@ import {
   RequestHandler
 } from 'express';
 
-console.log('hi');
-console.log(client);
-
+// TODO: route all monitor requests to here, and import Monitor
 /**
  * @types
  */
@@ -43,7 +41,7 @@ export const monitorController: monitorController = {
         console.log('Monitoring redis');
         if (args[0] === 'get') {
           // invoke info, look for keyspace miss, if keyspace miss, log arg[1] keyspace miss +1 in mongo
-          monitorController.keyspaceMissCheck(args[0], args[1])
+          //monitorController.keyspaceMissCheck(args[0], args[1])
         }
       });
     } catch (err) {
@@ -56,6 +54,5 @@ export const monitorController: monitorController = {
   keyspaceMissCheck: (key: any, value: any) => {
     // check if info.keyspacemiss has increased
     // fetch request to mongo, increasing that key's keyspace miss value
-    
   }
 };

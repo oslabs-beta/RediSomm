@@ -5,9 +5,10 @@ import { mongoController } from '../controller/mongoController';
 import { monitorController } from '../controller/monitorController';
 const router = express.Router();
 import { Request, Response } from 'express';
+import { monitor } from '../services/Monitor';
 
-
-router.get('/monitor', monitorController.onMonitorRedis, (req: Request, res: Response) => {
+// route to monitor controller
+router.get('/monitor', monitorController, (req: Request, res: Response) => {
   return res.status(418).send('monitoring the database')
 })
 //CREATE 1 FOR REDIS TESTING ONLY- create key value pair - 
