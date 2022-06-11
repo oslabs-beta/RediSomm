@@ -5,7 +5,7 @@
     "skipLibCheck": true,
     "jsx": "react",
     "esModuleInterop": true,
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "sourceMap": true,
     "baseUrl": ".",
     "outDir": "dist",

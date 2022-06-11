@@ -40,6 +40,7 @@ import LineGraph from '../graphs/LineGraph';
 import PieGraph from '../graphs/PieGraph';
 import HitRate from '../graphs/HitRate';
 import BarGrapht from '../graphs/BarGrapht';
+// import TestGrapht from '../graphs/TestGraph';
 
 import Ticker from '../Ticker';
 import Table from '../Table';
