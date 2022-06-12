@@ -8,7 +8,8 @@
     "start": "electron-forge start",
     "package": "electron-forge package",
     "server": "nodemon src/server/server.ts",
-    "server-start": "npm run start && server",
+    "server-start": "npm run server & npm run start",
+    "docker": "npm run server & npm run start",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
     "lint": "eslint --ext .ts,.tsx ."
@@ -128,6 +129,7 @@
     "axios": "^0.27.2",
     "body-parser": "^1.20.0",
     "cors": "^2.8.5",
+    "docker": "^1.0.0",
     "electron-squirrel-startup": "^1.0.0",
     "ioredis": "^5.0.6",
     "lodash": "^4.17.21",
