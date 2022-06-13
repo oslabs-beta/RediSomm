@@ -17,6 +17,7 @@ type mongoController = {
   updateValue: RequestHandler,
   expireTime: RequestHandler,
   removeExpireTime: RequestHandler,
+  updateKeyspace: RequestHandler,
 }
 
 type resultObject = {
@@ -306,4 +307,20 @@ deleteKey: (req: Request, res: Response, next: NextFunction): void => {
     return next();
   });
 },
+
+// UPDATEKEYSPACE - COMING FROM MONITOR TO UPDATE KEYSPACE 
+updateKeyspace: (req: Request, res: Response, next: NextFunction): void => {
+  const { key , keyspace } = req.body;
+  KeyData.findOneAndUpdate({ 'key': key, 'expired': false }, { $inc : { keyspace: 1 } }, function (err: NodeJS.ErrnoException, result: resultObject){
+    if (err) {
+        const defaultErr = {
+            log: 'ERROR found in mongoController.deleteKey',
+            message: { err: `There was an error ${err}` },
+          };
+          return next(defaultErr);
+    }
+    return next();
+  });
+}
+
 };
