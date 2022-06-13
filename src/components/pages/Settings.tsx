@@ -1,6 +1,7 @@
 import React from 'react';
 import PieGraph from '../graphs/PieGraph';
 import TestGraph from '../graphs/TestGraph';
+import RealtimeLine from '../graphs/RealtimeLine';
 
 const Settings = () => {
   return (
@@ -8,6 +9,7 @@ const Settings = () => {
       <h1 style={{ color: 'white' }}>Settings!!!</h1>
       <PieGraph />
       <TestGraph />
+      {/* <RealtimeLine /> */}
     </div>
   );
 };

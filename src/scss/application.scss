@@ -1,26 +1,25 @@
-@import "../../node_modules/ag-grid-community/src/styles/ag-grid.scss";
-@import "../../node_modules/ag-grid-community/src/styles/ag-theme-alpine-dark/sass/_ag-theme-alpine-dark-mixin.scss";
+@import '../../node_modules/ag-grid-community/src/styles/ag-grid.scss';
+@import '../../node_modules/ag-grid-community/src/styles/ag-theme-alpine-dark/sass/_ag-theme-alpine-dark-mixin.scss';
 @import './variables.scss';
-
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
-  Arial, sans-serif;
+    Arial, sans-serif;
   margin: 0;
   padding: 0;
   background: darken($primary-dark, 5);
   color: $primary-light;
-  .ag-theme-alpine-dark{
-      @include ag-theme-alpine-dark(
-        (
-          // use theme parameters where possible
-          background-color: $primary-dark,
-          odd-row-background-color: darken($primary-dark, 3),
-          header-background-color: $primary,
-          border-color: $primary-light,
-          alpine-active-color: $secondary
-        )
-      );
+  .ag-theme-alpine-dark {
+    @include ag-theme-alpine-dark(
+      (
+        // use theme parameters where possible
+        background-color: $primary-dark,
+        odd-row-background-color: darken($primary-dark, 3),
+        header-background-color: $primary,
+        border-color: $primary-light,
+        alpine-active-color: $secondary
+      )
+    );
   }
 }
 
@@ -40,8 +39,6 @@ body {
     width: 100%;
   }
 }
-
-
 
 // .window-display {
 //   display: flex;
@@ -67,61 +64,60 @@ body {
 
     .nav-text {
       .nav-menu {
-        padding: .5em;
+        padding: 0.5em;
         list-style: none;
         //.nav-menu-item
         .nav-menu-item {
           list-style: none;
-          
+
           .list-text {
-          text-decoration: none ;
-          color: $primary-light;
-          display: flex;
-          flex-direction:column;
-          padding: 1em;
-          margin: 0 -.5em;
-          align-items: flex-start;
-          justify-content: center;
-  
-          &:hover {
-            color: $primary-dark;
-            background: $primary-light;
-        }
-  
-          &:active {
-            color: $primary;
-            background: darken($primary-light, 10)
+            text-decoration: none;
+            color: $primary-light;
+            display: flex;
+            flex-direction: column;
+            padding: 1em;
+            margin: 0 -0.5em;
+            align-items: flex-start;
+            justify-content: center;
+
+            &:hover {
+              color: $primary-dark;
+              background: $primary-light;
+            }
+
+            &:active {
+              color: $primary;
+              background: darken($primary-light, 10);
+            }
           }
         }
       }
-    } 
-  }
-  #exit-text {
-    padding: .5em;
-    display: flex;
-        flex-direction:column;
-        padding: 1em;
-        margin-left: -.5em;
-        align-items: flex-start;
-        justify-content: center;
-        
-        &:hover {
-
-      color: $primary-dark;
-      background: $primary-light;
-  }
-
-    &:active {
-      color: $primary;
-      background: darken($primary-light, 10)
     }
-  }
+    #exit-text {
+      padding: 0.5em;
+      display: flex;
+      flex-direction: column;
+      padding: 1em;
+      margin-left: -0.5em;
+      align-items: flex-start;
+      justify-content: center;
+
+      &:hover {
+        color: $primary-dark;
+        background: $primary-light;
+      }
+
+      &:active {
+        color: $primary;
+        background: darken($primary-light, 10);
+      }
+    }
   }
   .database-view {
     display: flex;
     flex-direction: row;
     // justify-content: stretch;
-    
+
     .middle-tables {
       display: flex;
       flex-direction: column;
@@ -135,8 +131,8 @@ body {
         width: 100%;
         flex-direction: row;
         align-items: center;
-        padding-left:.5em;
-        padding-right:.5em;
+        padding-left: 0.5em;
+        padding-right: 0.5em;
         .entry {
           width: 25%;
           margin: 0.3em;
@@ -167,12 +163,12 @@ body {
       height: 100vh;
       min-width: 25vw;
       padding-left: 1em;
-      
+
       .ticker-name {
         display: flex;
         align-items: center;
         justify-content: center;
-        
+
         border: 1px solid $primary-light;
         border-bottom: none;
         height: 5vh;
