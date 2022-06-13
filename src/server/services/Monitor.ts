@@ -26,10 +26,10 @@ class Monitor {
     this.isOn = false;
   };
 
-  keyspaceCheck = async (key: string, value: string) => {
-    this.client.info((info: any) => {
-      console.log(info);
-    });
+  keyspaceCheck = (key: string) => {
+    this.client
+      .info()
+      .then((result: Buffer) => console.log('info result:', result));
   };
 
   monitor = async () => {
@@ -48,11 +48,8 @@ class Monitor {
             console.log(args);
             console.log(source);
             console.log(database);
-            const [key, value] = args;
-            if (args[0] === 'get')
-              () => {
-                this.keyspaceCheck(key, value);
-              };
+            const [command, key] = args;
+            if (args[0] === 'get') this.client.info();
           }
         );
       });
