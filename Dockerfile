@@ -35,7 +35,7 @@ RUN npx electron-rebuild -f -w node-pty
 
 # EXPOSE 3000
 EXPOSE 8080
-EXPOSE 3001
+EXPOSE 3000
 # Electron needs root for sandboxing
 # see https://github.com/electron/electron/issues/17972
 USER root
