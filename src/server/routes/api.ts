@@ -14,6 +14,15 @@ router.get(
     return res.status(418).send('monitor is on!');
   }
 );
+
+router.get(
+  '/allKeyspaceMisses',
+  mongoController.getKeyspaceMisses,
+  (req: Request, res: Response) => {
+    return res.status(418).send(res.locals.keyspaceMisses);
+  }
+);
+
 //CREATE 1 FOR REDIS TESTING ONLY- create key value pair -
 router.post(
   '/createKVP',
