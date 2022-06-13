@@ -34,6 +34,11 @@ const StackedLine = () => {
             stacked: true
           },
           xaxis: {
+            labels: {
+              style: {
+                colors: '#f3f3f3'
+              }
+            },
             tickPlacement: 'on',
             categories: [
               '0:00',
@@ -54,18 +59,6 @@ const StackedLine = () => {
               text: 'Time',
               style: {
                 color: '#f3f3f3'
-              }
-            },
-            labels: {
-              style: {
-                colors: [
-                  '#f3f3f3',
-                  '#f3f3f3',
-                  '#f3f3f3',
-                  '#f3f3f3',
-                  '#f3f3f3',
-                  '#f3f3f3'
-                ]
               }
             }
           },

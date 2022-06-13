@@ -8,9 +8,9 @@ export default (props) => {
       toolbar: {
         show: false
       },
-      zoom: {
-        enabled: false
-      },
+      // zoom: {
+      //   enabled: false
+      // },
       animations: {
         easing: 'linear',
         dynamicAnimation: {
@@ -29,15 +29,52 @@ export default (props) => {
     },
     xaxis: {
       type: 'datetime',
-      range: props.range
-    },
-    yaxis: {
-      labels: {
-        // formatter: (val) => val.toFixed()
-        formatter: (val) => val.toFixed(10)
+      range: props.range,
+      title: {
+        text: 'Time',
+        style: {
+          color: '#f3f3f3'
+        }
       },
-      title: { text: 'Hit/Miss' }
-    }
+      labels: {
+        style: {
+          colors: '#f3f3f3'
+        }
+      }
+    },
+
+    // yaxis: {
+    //   labels: {
+    //     // formatter: (val) => val.toFixed()
+    //     formatter: (val) => val.toFixed(10)
+    //   },
+    //   title: { text: 'Hit/Miss' }
+    // }
+    yaxis: [
+      {
+        labels: {
+          style: {
+            colors: ['#f3f3f3']
+          },
+          formatter: function (val) {
+            return val.toFixed(0);
+          }
+        },
+        title: {
+          text: 'Hit/Miss',
+          style: {
+            color: '#f3f3f3'
+          }
+        }
+      }
+    ]
+    // legend: {
+    //   show: true,
+    //   position: 'top',
+    //   labels: {
+    //     colors: '#f3f3f3'
+    //   }
+    // }
   };
   return <Chart type="line" options={options} series={props.dataList} />;
 };
