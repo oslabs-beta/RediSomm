@@ -9,7 +9,8 @@
     "package": "electron-forge package",
     "server": "nodemon src/server/server.ts",
     "server-start": "npm run server & npm run start",
-    "docker": "npm run server & npm run start",
+    "rebuild": "electron-rebuild -f -w node-pty",
+    "docker": "electron . --no-sandbox",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
     "lint": "eslint --ext .ts,.tsx ."
