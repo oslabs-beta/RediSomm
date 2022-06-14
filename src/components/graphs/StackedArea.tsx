@@ -4,8 +4,12 @@ import Chart from 'react-apexcharts';
 const StackedArea = () => {
   return (
     <div>
-      Key Space Miss over Time
+      <div className="StackedArea-name">
+        <div className="keyspace-title">Keyspace Miss Over Time </div>
+      </div>
+
       <Chart
+        className="stackedarea-chart"
         type="area"
         width={900}
         height={500}

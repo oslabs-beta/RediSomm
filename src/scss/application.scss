@@ -22,6 +22,14 @@ body {
     );
   }
 }
+.keyspace-title {
+  margin-left: 30px;
+  width: 200px;
+}
+
+.stackedarea-chart {
+  margin-top: 30px;
+}
 
 .metrics {
   margin-left: 30px;
@@ -29,6 +37,11 @@ body {
 .usage {
   margin-left: 30px;
 }
+
+.setting {
+  margin-left: 30px;
+}
+
 .usageovertime {
   margin-left: 50px;
 }
