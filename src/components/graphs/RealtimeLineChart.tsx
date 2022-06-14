@@ -5,6 +5,8 @@ import { ApexOptions } from 'apexcharts';
 export default (props) => {
   const options: ApexOptions = {
     chart: {
+      width: '1000',
+      height: '600',
       toolbar: {
         show: false
       },
@@ -61,7 +63,7 @@ export default (props) => {
           }
         },
         title: {
-          text: 'Hit/Miss',
+          text: 'Usage',
           style: {
             color: '#f3f3f3'
           }
@@ -76,5 +78,13 @@ export default (props) => {
     //   }
     // }
   };
-  return <Chart type="line" options={options} series={props.dataList} />;
+  return (
+    <Chart
+      type="line"
+      width={900}
+      height={500}
+      options={options}
+      series={props.dataList}
+    />
+  );
 };

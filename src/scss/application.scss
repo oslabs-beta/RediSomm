@@ -23,6 +23,27 @@ body {
   }
 }
 
+.metrics {
+  margin-left: 30px;
+}
+.usage {
+  margin-left: 30px;
+}
+.usageovertime {
+  margin-left: 50px;
+}
+
+.realtime-chart {
+  margin-top: 20px;
+  margin-left: 100px;
+}
+
+.stackedarea {
+  margin-left: 100px;
+  height: 50px;
+  width: 50px;
+}
+
 #root {
   margin: 0;
   display: flex;

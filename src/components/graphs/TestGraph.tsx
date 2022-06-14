@@ -36,7 +36,7 @@ const TestGraph = () => {
         {
           x: new Date(),
           // y: data.length * Math.random()
-          y: getRandomInt(10)
+          y: getRandomInt(50)
         }
       ];
     };

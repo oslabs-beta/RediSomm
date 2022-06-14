@@ -4,11 +4,11 @@ import Chart from 'react-apexcharts';
 const StackedArea = () => {
   return (
     <div>
-      Stacked Area Chart
+      Key Space Miss over Time
       <Chart
         type="area"
-        width={600}
-        height={600}
+        width={900}
+        height={500}
         series={[
           {
             name: 'Comeback',
