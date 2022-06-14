@@ -41,7 +41,9 @@ export default (props) => {
       labels: {
         style: {
           colors: '#f3f3f3'
-        }
+        },
+        //this matched time on graph as my computer time
+        datetimeUTC: false
       }
     },
 
