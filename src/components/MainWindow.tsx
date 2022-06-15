@@ -3,7 +3,7 @@ import DatabaseView from './DatabaseView';
 // import Nav from './Nav';
 //update ys
 import { Routes, Route } from 'react-router-dom';
-import TTLpage from './pages/TTLpage';
+import Usage from './pages/Usage';
 import Settings from './pages/Settings';
 import Metrics from './pages/Metrics';
 
@@ -11,7 +11,7 @@ const MainWindow = () => {
   return (
     <Routes>
       <Route path="/" element={<DatabaseView />} />
-      <Route path="/ttl" element={<TTLpage />} />
+      <Route path="/usage" element={<Usage />} />
       <Route path="/metrics" element={<Metrics />} />
       <Route path="/settings" element={<Settings />} />
     </Routes>
@@ -19,7 +19,6 @@ const MainWindow = () => {
 };
 
 export default MainWindow;
-
 
 // const Routes = () => {
 //   return (

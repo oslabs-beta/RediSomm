@@ -1,9 +1,12 @@
+// import RealtimeLine from '../graphs/RealtimeLine';
 import React from 'react';
 
 const Settings = () => {
   return (
     <div className="settings-page">
-      <h1 style={{ color: 'white' }}>Settings!!!</h1>
+      <h1 className="setting" style={{ color: 'white' }}>
+        Settings
+      </h1>
     </div>
   );
 };
