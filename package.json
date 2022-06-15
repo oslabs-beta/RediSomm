@@ -158,6 +158,7 @@
     "redis": "^4.1.0",
     "redis-cli": "^2.1.2",
     "redis-promisify": "^0.1.2",
+    "redis-server": "^1.2.2",
     "tedis": "^0.1.12",
     "ts-node": "^10.8.0"
   }
