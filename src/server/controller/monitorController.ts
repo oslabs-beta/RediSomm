@@ -1,4 +1,5 @@
 import { client } from './redisController';
+import axios from 'axios';
 import Monitor from '../services/Monitor';
 import {
   Request,
@@ -7,6 +8,7 @@ import {
   NextFunction,
   RequestHandler
 } from 'express';
+
 // TODO: route all monitor requests to here, and import Monitor
 /**
  * @types
@@ -35,17 +37,40 @@ const defaultErr = (err: Error, middlewareName: string, num = 500) => {
 export const monitorController: monitorController = {
   keyspaceMissCheck: (key: any, value: any) => {
     // check if info.keyspacemiss has increased
-    client.info((info: any) => console.log('info:', info));
+    client.info().then((data: any) => {
+      console.log(data.spilt(''));
+    });
     // fetch request to mongo, increasing that key's keyspace miss value
   },
   // turn monitor on
+
   onMonitorRedis: async (req: Request, res: Response, next: NextFunction) => {
+    let keyspaceMisses = 0;
+    let keyspaceHits = 0;
+    let newKeyspaceMisses = 0;
+    let newKeyspaceHits = 0;
+
     try {
-      client
-      .info('stats')
-      .then((result: any) => console.log('before monitor on', result));
-      
-      client.monitor((err: Error, monitor: any): void => {
+      client.info('stats').then((data: any) => {
+        keyspaceHits = Number(
+          data
+            .substring(
+              data.indexOf('keyspace_hits'),
+              data.indexOf('keyspace_misses')
+            )
+            .split(':')[1]
+        );
+        keyspaceMisses = Number(
+          data
+            .substring(
+              data.indexOf('keyspace_misses'),
+              data.indexOf('pubsub_channels')
+            )
+            .split(':')[1]
+        );
+      });
+
+      await client.monitor((err: Error, monitor: any): void => {
         // Entering monitoring mode.
         monitor.on(
           'monitor',
@@ -61,9 +86,41 @@ export const monitorController: monitorController = {
             console.log(database);
             const [command, key] = args;
             if (args[0] === 'get')
-              client
-                .info('stats')
-                .then((result: any) => console.log(result));
+              client.info('stats').then((data1: any) => {
+                // console.log('data1:', data1)
+                newKeyspaceHits = Number(
+                  data1
+                    .substring(
+                      data1.indexOf('keyspace_hits'),
+                      data1.indexOf('keyspace_misses')
+                    )
+                    .split(':')[1]
+                );
+                newKeyspaceMisses = Number(
+                  data1
+                    .substring(
+                      data1.indexOf('keyspace_misses'),
+                      data1.indexOf('pubsub_channels')
+                    )
+                    .split(':')[1]
+                );
+                let missed;
+                newKeyspaceMisses > keyspaceMisses
+                  ? (missed = true)
+                  : (missed = false);
+                console.log('NkeyspaceM', newKeyspaceMisses, 'keyspaceM', keyspaceMisses)
+                console.log('missed:', missed);
+
+                axios('http://localhost:8080/db/monitor', {
+                  method: 'POST',
+                  data: JSON.stringify({
+                    key: key,
+                    miss: missed,
+                    totalKeyspaceMisses: newKeyspaceMisses,
+                    totalKeyspaceHits: newKeyspaceHits
+                  })
+                }).catch((err) => console.log(err));
+              });
           }
         );
       });
