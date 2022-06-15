@@ -92,12 +92,8 @@
     "@testing-library/react": "^13.3.0",
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
-<<<<<<< HEAD
-    "@types/node": "^17.0.40",
-=======
     "@types/jest": "^28.1.1",
     "@types/node": "^17.0.35",
->>>>>>> young/apexchart
     "@types/node-sass": "^4.11.2",
     "@types/plotly.js": "^1.54.22",
     "@types/randomstring": "^1.1.8",
@@ -139,13 +135,9 @@
     "typescript": "~4.5.4"
   },
   "dependencies": {
-<<<<<<< HEAD
-    "@types/ioredis": "^4.28.10",
-=======
     "@types/d3": "^7.4.0",
     "@types/d3-selection": "^3.0.2",
     "@types/react-plotly.js": "^2.5.1",
->>>>>>> young/apexchart
     "@types/react-router-dom": "^5.3.3",
     "ag-grid-community": "^27.3.0",
     "ag-grid-react": "^27.3.0",
