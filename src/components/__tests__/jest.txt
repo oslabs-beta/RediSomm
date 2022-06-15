@@ -1,0 +1,6 @@
+in order to use jest on typescript, had to install -D ts-jest, @babel/preset-typescript
+
+installed -D jest too but not sure if it's necessary
+
+
+React Testing Library is not an alternative to Jest. Each performs a clear task, and you need them both to test your components.

@@ -3,13 +3,14 @@ import * as d3 from 'd3';
 
 function LineGraph() {
   //dummie data
-  const [data] = useState([25, 50, 35, 15, 94, 10]);
+  const [data] = useState([10, 5, 25, 25, 30, 5]);
   const svgRef = useRef();
 
   useEffect(() => {
     //setting up svg
     const w = 400;
-    const h = 100;
+    // const h = 100;
+    const h = 40;
     const svg = d3
       .select(svgRef.current)
       .attr('width', w)
@@ -37,7 +38,11 @@ function LineGraph() {
       .axisBottom(xScale)
       .ticks(data.length)
       .tickFormat((i: any) => i + 1);
-    const yAxis = d3.axisLeft(yScale).ticks(5);
+    const yAxis = d3
+      .axisLeft(yScale)
+      .ticks(5)
+      .tickFormat((i: any) => i + 5);
+    // const yAxis = d3.axisLeft(yScale).ticks(5);
     svg
       .append('g')
       .call(xAxis)
