@@ -7,7 +7,7 @@ const ApexStackedBar = () => {
       Stacked Bar Chart
       <Chart
         type="bar"
-        width={600}
+        width={800}
         height={600}
         series={[
           {

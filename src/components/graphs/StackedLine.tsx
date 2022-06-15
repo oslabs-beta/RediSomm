@@ -7,7 +7,7 @@ const StackedLine = () => {
       Stacked Area Chart
       <Chart
         type="line"
-        width={600}
+        width={800}
         height={600}
         series={[
           {

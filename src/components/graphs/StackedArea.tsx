@@ -5,7 +5,7 @@ const StackedArea = () => {
   return (
     <div>
       <div className="StackedArea-name">
-        <div className="keyspace-title">Keyspace Miss Over Time </div>
+        <div className="stackedarea-title">Keyspace Miss Over Time </div>
       </div>
 
       <Chart
