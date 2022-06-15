@@ -1,7 +1,5 @@
 import React from 'react';
-import TestGraph from '../graphs/TestGraph';
-// import ApexPie from '../graphs/ApexPieChart';
-// import Realtimetest from '../graphs/Realtimetest';
+import RealtimeChart from '../graphs/Realtimechart';
 
 const Usage = () => {
   return (
@@ -11,10 +9,8 @@ const Usage = () => {
       </h1>
       <h4 className="usageovertime">Usage Over Time</h4>
       <div className="realtime-chart">
-        <TestGraph />
+        <RealtimeChart />
       </div>
-      {/* <ApexPie /> */}
-      {/* <Realtimetest /> */}
     </div>
   );
 };
