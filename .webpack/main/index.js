@@ -1023,7 +1023,8 @@ var createWindow = function () {
     // Create the browser window.
     var mainWindow = new electron_1.BrowserWindow({
         height: 720,
-        width: 1280
+        width: 1280,
+        icon: '../assets/icon512.ico'
     });
     // and load the index.html of the app.
     mainWindow.loadURL('http://localhost:3000/main_window');
@@ -1035,6 +1036,7 @@ var createWindow = function () {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 electron_1.app.on('ready', createWindow);
+electron_1.app.commandLine.appendSwitch('--no-sandbox');
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
