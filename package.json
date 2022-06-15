@@ -146,7 +146,7 @@
     "body-parser": "^1.20.0",
     "chart.js": "^3.8.0",
     "cors": "^2.8.5",
-    "docker": "^1.0.0",
+    "docker": "^0.2.14",
     "electron-squirrel-startup": "^1.0.0",
     "ioredis": "^5.0.6",
     "lodash": "^4.17.21",
@@ -156,6 +156,7 @@
     "react-plotly.js": "^2.5.1",
     "react-router-dom": "^6.3.0",
     "redis": "^4.1.0",
+    "redis-cli": "^2.1.2",
     "redis-promisify": "^0.1.2",
     "tedis": "^0.1.12",
     "ts-node": "^10.8.0"
