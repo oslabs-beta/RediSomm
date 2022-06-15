@@ -1,4 +1,3 @@
-import { ColumnRowGroupChangeRequestEvent } from 'ag-grid-community';
 import {
   Request,
   Response,
@@ -7,7 +6,7 @@ import {
   RequestHandler
 } from 'express';
 
-import { KeyData } from '../models/mongoModels';
+import { KeyData, RedisMetrics } from '../models/mongoModels';
 
 type mongoController = {
   getAllRecords: RequestHandler;
@@ -23,6 +22,7 @@ type mongoController = {
   expireTime: RequestHandler;
   removeExpireTime: RequestHandler;
   updateKeyspace: RequestHandler;
+  updateTotalKeyspace: RequestHandler;
   getKeyspaceMisses: RequestHandler;
 };
 
@@ -368,11 +368,38 @@ export const mongoController: mongoController = {
     const { key, keyspace } = req.body;
     KeyData.findOneAndUpdate(
       { key: key, expired: false },
-      { $inc: { keyspace: 1 } },
+      { $inc: { [keyspace]: 1 } },
+      { upsert: true },
       function (err: NodeJS.ErrnoException, result: resultObject) {
         if (err) {
           const defaultErr = {
             log: 'ERROR found in mongoController.deleteKey',
+            message: { err: `There was an error ${err}` }
+          };
+          return next(defaultErr);
+        }
+        return next();
+      }
+    );
+  },
+
+  // UPDATETOTALKEYSPACE -
+  updateTotalKeyspace: (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): void => {
+    const { totalKeyspaceMisses, totalKeyspaceHits } = req.body;
+
+    RedisMetrics.updateOne(
+      {
+        keyspaceMisses: totalKeyspaceMisses,
+        keyspaceHits: totalKeyspaceHits
+      },
+      function (err: NodeJS.ErrnoException, result: any) {
+        if (err) {
+          const defaultErr = {
+            log: 'ERROR found in mongoController.updateTotalKeyspace',
             message: { err: `There was an error ${err}` }
           };
           return next(defaultErr);

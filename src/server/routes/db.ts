@@ -10,8 +10,9 @@ import { Request, Response, NextFunction } from 'express';
 route.post(
     '/monitor',
     mongoController.updateKeyspace,
+    mongoController.updateTotalKeyspace,
     (req: Request, res: Response) => {
-      return res.status(40).send('monitor is on!');
+      return res.status(200).send('monitor is on!');
     }
   );
 

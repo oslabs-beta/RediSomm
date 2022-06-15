@@ -106,19 +106,19 @@ export const monitorController: monitorController = {
                 );
                 let missed;
                 newKeyspaceMisses > keyspaceMisses
-                  ? (missed = true)
-                  : (missed = false);
+                  ? (missed = "keyspaceMiss")
+                  : (missed = "keyspaceHits");
                 console.log('NkeyspaceM', newKeyspaceMisses, 'keyspaceM', keyspaceMisses)
                 console.log('missed:', missed);
 
                 axios('http://localhost:8080/db/monitor', {
                   method: 'POST',
-                  data: JSON.stringify({
+                  data: {
                     key: key,
-                    miss: missed,
+                    keyspace: missed,
                     totalKeyspaceMisses: newKeyspaceMisses,
                     totalKeyspaceHits: newKeyspaceHits
-                  })
+                  }
                 }).catch((err) => console.log(err));
               });
           }
