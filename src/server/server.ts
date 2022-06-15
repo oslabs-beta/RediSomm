@@ -5,28 +5,16 @@ const path = require('path');
 import { apiRouter } from './routes/api';
 import { mongoController } from './controller/mongoController';
 import cors from 'cors';
-
-// const userApiRouter = require('./routers/userApi.js');???
-// const reviewApiRouter = require('./routers/reviewApi.js');???
+import { Response, Request, NextFunction } from 'express';
 // const cookieParser = require('cookie-parser');
 
 app.use(cors());
 app.use(express.json());
 app.use(express.static('../../.Webpack/renderer/assets'));
 app.use(express.urlencoded());
-// app.use(cookieParser());
+// app.set('query parser', 'simple');
 
-//PERHAPS READ 6 FOR US
-// app.get('/usertable', (req, res) => {
-//     let db = require('./models/model.js');
-//     const query =
-//         `SELECT * FROM "public"."public.User"`;
-//     db.query(query)
-//       .then(data => {
-//         console.log(data.rows)
-//         res.status(200).json(data.rows)
-//       })
-//   })
+// app.use(cookieParser());
 
 //READ 1
 app.get(
@@ -40,16 +28,16 @@ app.get(
 app.use('/api', apiRouter);
 
 // GLOBAL ERROR HANDLER
-//   app.use((err, req, res, next) => {
-//     const defaultErr = {
-//       log: 'Express error handler caught unknown middleware error',
-//       status: 400,
-//       message: { err: 'An error occurred' },
-//     };
-//     const errorObj = Object.assign({}, defaultErr, err);
-//     console.log(errorObj.log);
-//     return res.status(errorObj.status).json(errorObj.message);
-//   });
+  app.use((err: NodeJS.ErrnoException, req: Request, res: Response, next: NextFunction) => {
+    const defaultErr = {
+      log: 'Express error handler caught unknown middleware error',
+      status: 400,
+      message: { err: 'An error occurred' },
+    };
+    const errorObj = Object.assign({}, defaultErr, err);
+    console.log(errorObj.log);
+    return res.status(errorObj.status).json(errorObj.message);
+  });
 
 app.listen(PORT, () => {
   console.log(`listening on port ${PORT}`);
