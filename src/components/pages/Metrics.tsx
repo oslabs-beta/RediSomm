@@ -11,7 +11,6 @@ const Metrics = () => {
       </h1>
       <div className="stackedarea">
         <StackedArea />
-        <StackedBar />
       </div>
     </div>
   );
