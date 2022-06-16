@@ -1,0 +1,5 @@
+@import '~ag-grid-community/src/styles/ag-grid.scss';
+@import '~ag-grid-community/src/styles/ag-theme-alpine/sass/ag-theme-alpine-dark-mixin';
+@import './variables.scss'; .ag-theme-alpine-dark {
+  background-color: $clr-primary;
+}

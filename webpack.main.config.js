@@ -6,9 +6,23 @@ module.exports = {
   entry: './src/index.ts',
   // Put your normal webpack config below here
   module: {
-    rules: require('./webpack.rules'),
+    rules: require('./webpack.rules')
   },
   resolve: {
-    extensions: ['.js', '.ts', '.jsx', '.tsx', '.css', '.json'],
+    extensions: ['.js', '.ts', '.jsx', '.tsx', '.css', '.json', 'sass', 'scss']
   },
+  devServer: {
+    static: {
+      directory: 'index.html'
+    },
+    port: 3000,
+    allowedHosts: 'all',
+    proxy: {
+      '/api/**': {
+        target: 'http://localhost:8080',
+        pathRewrite: { '^/api': '' },
+        changeOrigin: true
+      }
+    }
+  }
 };

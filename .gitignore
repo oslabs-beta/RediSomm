@@ -83,7 +83,11 @@ typings/
 .dynamodb/
 
 # Webpack
-.webpack/
+.webpack
 
 # Electron-Forge
 out/
+
+package-lock.json
+
+dump.rdb

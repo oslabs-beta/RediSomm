@@ -1,11 +1,12 @@
 {
   "compilerOptions": {
+    // "target": "es2017",
     "allowJs": true,
-    "module": "commonjs",
+    "module": "commonJS",
     "skipLibCheck": true,
     "jsx": "react",
     "esModuleInterop": true,
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "sourceMap": true,
     "baseUrl": ".",
     "outDir": "dist",
@@ -15,5 +16,5 @@
       "*": ["node_modules/*"]
     }
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*", "__tests__"]
 }
