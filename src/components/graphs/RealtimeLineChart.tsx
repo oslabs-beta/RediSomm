@@ -65,7 +65,7 @@ export default (props) => {
           }
         },
         title: {
-          text: 'Usage',
+          text: 'Average Object Size',
           style: {
             color: '#f3f3f3'
           }

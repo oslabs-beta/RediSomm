@@ -10,7 +10,6 @@ const DatabaseView = () => {
         <TableAdd />
         <Table />
       </div>
-      <Ticker />
     </div>
   );
 };
